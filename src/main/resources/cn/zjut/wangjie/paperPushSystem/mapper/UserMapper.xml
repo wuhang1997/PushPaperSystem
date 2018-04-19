@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.zjut.wangjie.paperPushSystem.mapper.UserMapper">
+ 	<resultMap type="user" id="userMap">
+ 		<result column="user_id" property="uid"/>
+ 		<result column='user_name' property='name'/>
+ 		<result column='email' property='email'/>
+ 		<result column='psd' property='password'/>
+ 	</resultMap>
+ 	<insert id='addUser' parameterType='user'  useGeneratedKeys="true" keyProperty="uid" keyColumn="user_id" >
+ 		insert into user values(null,#{name},#{email},#{password})
+ 	</insert>
+ 	<select id="findUserByEmailAndPassword" parameterType="user" resultMap="userMap">
+ 		select * from user where email=#{email} and psd=#{password}
+ 	</select>
+ 	<select id="findUserByEmail" parameterType="String" resultMap="userMap">
+ 		select * from user where email=#{email}
+ 	</select>
+ </mapper>
