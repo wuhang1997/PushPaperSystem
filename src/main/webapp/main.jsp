@@ -27,6 +27,7 @@
                 
                 <!--/span-->
                 <div class="span9" id="content">
+
                     <div class="row-fluid">
                         <div class="alert alert-success">
 							<button type="button" class="close" data-dismiss="alert">&times;</button>

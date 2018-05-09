@@ -20,7 +20,7 @@
 			<li><a href="${pageContext.request.contextPath }/paperController/ICML/paperShow.action">
 			
 			 <i class="icon-chevron-right"></i>
-			  <span class="badge badge-info pull-right">27</span>
+			  <span class="badge badge-info pull-right">${ICMLNum}</span>
 					ICML</a></li>
 			<li><a href="buttons.html"><i class="icon-chevron-right"></i>
 					Buttons & Icons</a></li>
