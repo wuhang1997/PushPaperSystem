@@ -50,6 +50,7 @@ mail:
   from: paperpushsystem@163.com
   authorizationCode: paper123456
   host: smtp.163.com
+  title: 有篇论文，了解一下！
 
 mybatis:
   configuration:

@@ -31,4 +31,6 @@ public interface PaperInfoDao {
 	List<PaperInfo> getAllPaper();
 
 
+
+
 }
