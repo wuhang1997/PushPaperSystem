@@ -22,7 +22,7 @@ public class UserController {
 			return "main";
 		}
 		else {
-			request.setAttribute("result", "账户名或密码错误");
+			request.getSession().setAttribute("result", "账户名或密码错误");
 			return "login";
 		}
 	}

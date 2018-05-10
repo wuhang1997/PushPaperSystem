@@ -1,7 +1,11 @@
 package cn.zjut.wangjie.pushpaper.controller;
 
 
+import cn.zjut.wangjie.pushpaper.pojo.Collection;
 import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
+import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
+import cn.zjut.wangjie.pushpaper.pojo.User;
+import cn.zjut.wangjie.pushpaper.service.CollectionService;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import org.elasticsearch.discovery.zen.ElectMasterService;
@@ -28,6 +32,8 @@ public class PaperController {
 	private HttpServletResponse response;
 	@Autowired
 	private ELPaperService elPaperService;
+	@Autowired
+    private CollectionService collectionService;
 	@Value("${page.pageSize}")
 	private int pageSize;
 	@RequestMapping("/{website}/paperShow.action")
@@ -76,10 +82,17 @@ public class PaperController {
 		request.getSession().setAttribute("pageDTO", pageDTO);
 		return "paperListShow";
 	}
-	@RequestMapping("/{paperId}/paperInfoShow.action")
-	public String showPdf(@PathVariable(value="paperId") Integer paperId) {
-		
-		return null;
+	@RequestMapping("showPaperInfo")
+	public String showPaperInfo(@RequestParam(value="id") Integer paperId) {
+		PaperInfo paperInfo = paperService.getPaperInfoById(paperId);
+		request.getSession().setAttribute("paper", paperInfo);
+		User user = (User)request.getSession().getAttribute("user");
+        Collection collection = new Collection();
+        collection.setPaperId(paperId);
+        collection.setUserId(user.getUid());
+		boolean isCollected = collectionService.isCollection(collection);
+		request.setAttribute("isCollected",isCollected);
+		return "paperInfoShow";
 	}
 	@RequestMapping(value = "/{file}/download.action")
     public ResponseEntity<byte[]> downloadFile(@PathVariable(value = "file") String file){

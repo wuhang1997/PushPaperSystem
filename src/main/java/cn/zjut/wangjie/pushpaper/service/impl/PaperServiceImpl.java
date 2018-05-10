@@ -35,17 +35,21 @@ public class PaperServiceImpl implements PaperService {
 		PaperInfo paperInfo = paperInfoDao.getPaperInfoById(id);
 		StringBuilder paperSB = new StringBuilder();
 		paperSB.append("Article:");
+		paperSB.append("\n    ");
 		paperSB.append(paperInfo.getArticle());
 		paperSB.append("\n");
 		paperSB.append("Authors:");
+		paperSB.append("\n    ");
 		paperSB.append(paperInfo.getAuthors());
 		paperSB.append("\n");
 		paperSB.append("From:");
+		paperSB.append("\n    ");
 		paperSB.append(paperInfo.getWebsite());
 		paperSB.append("\n");
 		paperSB.append("Abstract:");
+		paperSB.append("\n    ");
 		paperSB.append(paperInfo.getPaperAbstract());
-
+		paperSB.append("\n");
 		paperSB.append("http://localhost:8090/paperController/showPaperInfo?id="+paperInfo.getPaperId());
 
 		return paperSB.toString();

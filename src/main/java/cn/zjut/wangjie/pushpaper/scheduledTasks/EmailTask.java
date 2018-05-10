@@ -34,7 +34,7 @@ public class EmailTask {
      * m每天0点0分0秒处理过期积分
      * @author wangjie
      */
-    @Scheduled(cron = "0 30 16 * * ?")
+    @Scheduled(cron = "0 39 16 * * ?")
     public void sendPaperInfoEmail(){
 
         SendEmailUtil.sendEmail("17826873177@163.com",title,paperService.turnPaperInfoToString(10));

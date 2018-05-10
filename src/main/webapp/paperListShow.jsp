@@ -73,7 +73,7 @@
                     <div class="block">
                         <div class="navbar navbar-inner block-header">
                             <div class="panel-heading">
-                                <a href="${pageContext.request.contextPath }/paperController/${paperInfo.paperId  }/paperInfoShow.action">${paperInfo.article}</a>
+                                <a href="${pageContext.request.contextPath }/paperController/showPaperInfo?id=${paperInfo.paperId}">${paperInfo.article}</a>
                             </div>
                         </div>
                         <div class="block-content collapse in">
