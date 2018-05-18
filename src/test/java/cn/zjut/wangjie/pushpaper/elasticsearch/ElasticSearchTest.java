@@ -133,5 +133,16 @@ public class ElasticSearchTest {
         }
         log.info("\nsize:"+count);
     }
+    @Test
+    public void testRecommend() {
+        List<PaperInfo> paperInfoList = elPaperService.recommend();
+        log.info(""+paperInfoList.size());
+        for (PaperInfo p :paperInfoList
+                ) {
+            log.info(""+p.getPaperId());
+        }
+
+
+    }
 
 }

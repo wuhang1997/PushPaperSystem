@@ -11,7 +11,9 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import lombok.extern.java.Log;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -20,10 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @program: PushPaper
@@ -105,15 +109,24 @@ public class ELPaperServiceImpl implements ELPaperService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .should((QueryBuilders.matchQuery("article", searchContent)))
                 .should(QueryBuilders.matchQuery("authors", searchContent))
-                .should(QueryBuilders.matchQuery("paperAbstract", searchContent));
+                .should(QueryBuilders.matchQuery("paperAbstract", searchContent))
+                .must(QueryBuilders.matchQuery("website", "ICML"));
 
         Iterable<PaperInfo> paperInfoIterable=elPaperInfoRepository.search(boolQueryBuilder);
         Iterator<PaperInfo> iterator = paperInfoIterable.iterator();
         List<PaperInfo> paperInfoList = new ArrayList<>(16);
+
+
         while(iterator.hasNext()){
 
             paperInfoList.add(iterator.next());
 
+        }
+
+        if (paperInfoList.size()==0){
+            pageDTO.setTotalPage(0);
+            pageDTO.setContentList(null);
+            return null;
         }
 
         pageDTO.calculatBegin();
@@ -122,13 +135,77 @@ public class ELPaperServiceImpl implements ELPaperService {
         int totalPages = paperInfoList.size()%pageDTO.getPageSize()>0?paperInfoList.size()/pageDTO.getPageSize()+1:paperInfoList.size()/pageDTO.getPageSize();
         pageDTO.setTotalPage(totalPages);
         pageDTO.calculatBegin();
+        int begin =pageDTO.getBegin();
         int end  =pageDTO.getBegin()+pageDTO.getPageSize();
         if (end>paperInfoList.size()-1){
             end = paperInfoList.size()-1;
         }
-        pageDTO.setContentList(paperInfoList.subList(pageDTO.getBegin(),end));
+        if (begin>paperInfoList.size()-1){
+            begin = paperInfoList.size()-1;
+        }
+        pageDTO.setContentList(paperInfoList.subList(begin,end));
 
         return pageDTO;
     }
 
+    @Override
+    public List<PaperInfo> recommend() {
+        String[] texts = {" Lerrel Pinto, James Davidson, Rahul Sukthankar, Abhinav Gupta ; "," Alexander Kolesnikov, Christoph H. Lampert ;"};
+        String[] fields = {"authors","paperAbstract"};
+
+        MoreLikeThisQueryBuilder.Item[] items = new MoreLikeThisQueryBuilder.Item[2];
+        items[0] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo","3");
+        items[1] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo","4");
+        MoreLikeThisQueryBuilder moreLikeThisQueryBuilder =
+                QueryBuilders.moreLikeThisQuery(fields,texts,items);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL url = classLoader.getResource("stop_word.txt");
+        Set<String> stopWords = new HashSet<String>();
+        try {
+            BufferedReader bf = new BufferedReader(new FileReader(url.getFile()));
+            String line = null;
+            while((line=bf.readLine())!=null) {
+                stopWords.add(line.trim().toUpperCase());
+            }
+            bf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String[] words = new String[stopWords.size()];
+        int i =0;
+        for (String word:stopWords
+             ) {
+            words[i]=word;
+            i++;
+        }
+        moreLikeThisQueryBuilder.stopWords(words);
+        moreLikeThisQueryBuilder.minDocFreq(2);
+        moreLikeThisQueryBuilder.maxDocFreq(80);
+        //moreLikeThisQueryBuilder.minTermFreq(3);
+        //moreLikeThisQueryBuilder.maxQueryTerms(10);
+        moreLikeThisQueryBuilder.minimumShouldMatch("60%");
+
+        log.info(moreLikeThisQueryBuilder.toString());
+        Iterable<PaperInfo> paperInfoIterable=elPaperInfoRepository.search(moreLikeThisQueryBuilder);
+
+
+        Iterator<PaperInfo> iterator = paperInfoIterable.iterator();
+        List<PaperInfo> paperInfoList = new ArrayList<>(16);
+
+
+
+        while(iterator.hasNext()){
+
+            paperInfoList.add(iterator.next());
+
+        }
+
+
+        return paperInfoList;
+    }
 }
