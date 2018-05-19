@@ -12,5 +12,7 @@ public interface PaperService {
 	int countPaperByWebsite(String website);
 	PaperInfo getPaperInfoById(Integer id);
 
-	String turnPaperInfoToString(Integer id);
+
+	void pushRecommendPaper();
+	void pushNewPaperToAllUser();
 }

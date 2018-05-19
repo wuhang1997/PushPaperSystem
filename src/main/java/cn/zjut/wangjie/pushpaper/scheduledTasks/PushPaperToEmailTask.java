@@ -1,12 +1,17 @@
 package cn.zjut.wangjie.pushpaper.scheduledTasks;
 
+import cn.zjut.wangjie.pushpaper.pojo.User;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
+import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import cn.zjut.wangjie.pushpaper.util.SendEmailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @program: bonus-point-cloud
@@ -16,31 +21,32 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
-public class EmailTask {
-
-
-    @Value("${mail.from}")
-    private String from;
-    @Value("${mail.authorizationCode}")
-    private String authorizationCode;
-    @Value("${mail.host}")
-    private String host;
-    @Value("${mail.title}")
-    private String title;
+public class PushPaperToEmailTask {
     @Autowired
     private PaperService paperService;
+    @Autowired
+    private ELPaperService elPaperService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
-     * m每天0点0分0秒处理过期积分
+     * 定时推送新paper
      * @author wangjie
      */
     @Scheduled(cron = "0 39 16 * * ?")
-    public void sendPaperInfoEmail(){
+    public void pushNewPaperToAllUser(){
 
-        SendEmailUtil.sendEmail("17826873177@163.com",title,paperService.turnPaperInfoToString(10));
+        paperService.pushNewPaperToAllUser();
 
     }
 
+    @Scheduled(cron = "0 39 16 * * ?")
+    public void pushRecommendPaper(){
 
+
+        paperService.pushRecommendPaper();
+
+    }
 
 }

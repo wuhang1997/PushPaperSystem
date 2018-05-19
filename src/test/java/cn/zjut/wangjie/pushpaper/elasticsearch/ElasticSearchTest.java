@@ -47,6 +47,7 @@ public class ElasticSearchTest {
     @Autowired
     private PaperInfoDao paperInfoDao;
 
+
     @Test
     public void testElasticsearch(){
        // PaperInfo paperInfo = paperService.getPaperInfoById(12);
@@ -103,14 +104,14 @@ public class ElasticSearchTest {
 
 
     }
-    @Test
+ /*   @Test
     public void getPaperInfoListBySearch(){
         List<PaperInfo> paperInfoList = elPaperService.searchPaperInfo("Manik Varma");
         for (PaperInfo p:paperInfoList
              ) {
             log.info("\n paperInfo :"+p.toString());
         }
-    }
+    }*/
 
     @Test
     public void testESPepository(){

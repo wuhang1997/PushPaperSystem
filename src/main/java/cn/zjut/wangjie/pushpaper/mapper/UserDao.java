@@ -2,11 +2,10 @@ package cn.zjut.wangjie.pushpaper.mapper;
 
 import cn.zjut.wangjie.pushpaper.pojo.User;
 import cn.zjut.wangjie.pushpaper.sql.UserSQLFactory;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 public interface UserDao {
@@ -17,5 +16,8 @@ public interface UserDao {
 
 	@SelectProvider(type = UserSQLFactory.class , method = "findUserSQL")
 	User findUser(User user);
+
+	@Select("select * from user ")
+	List<User> getAllUser();
 
 }

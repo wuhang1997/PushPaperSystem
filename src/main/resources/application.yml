@@ -20,12 +20,16 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     filters: stat
+
+
+
   #elasticsearch jpa
   data:
     elasticsearch:
       cluster-nodes: 127.0.0.1:9300
       repositories:
         enabled: true
+
   #jsp前缀后缀
   mvc:
     view:
@@ -50,7 +54,9 @@ mail:
   from: paperpushsystem@163.com
   authorizationCode: paper123456
   host: smtp.163.com
-  title: 有篇论文，了解一下！
+  title:
+    newPaperPush: 新的论文，了解一下！
+    recommendPush: 有篇论文，猜你喜欢！
 
 mybatis:
   configuration:
@@ -80,3 +86,6 @@ page:
 
 md5:
   salt: 123456
+
+paperPath: D:\\resource\\paper
+

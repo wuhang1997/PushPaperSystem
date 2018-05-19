@@ -75,6 +75,7 @@ public class ELPaperServiceImpl implements ELPaperService {
         }
         return null;
     }
+    @Override
     public PageDTO searchPaperInfoListByPage(PageDTO pageDTO,String searchContent){
 
 

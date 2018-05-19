@@ -8,11 +8,12 @@ import cn.zjut.wangjie.pushpaper.pojo.User;
 import cn.zjut.wangjie.pushpaper.service.CollectionService;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
-import org.elasticsearch.discovery.zen.ElectMasterService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,8 @@ public class PaperController {
 	private ELPaperService elPaperService;
 	@Autowired
     private CollectionService collectionService;
+	@Autowired
+	private RedisTemplate redisTemplate;
 	@Value("${page.pageSize}")
 	private int pageSize;
 	@RequestMapping("/{website}/paperShow.action")
@@ -80,6 +83,11 @@ public class PaperController {
 		pageDTO.setPageSize(pageSize);
 		pageDTO = elPaperService.searchPaperInfoListByPage(pageDTO,search);
 		request.getSession().setAttribute("pageDTO", pageDTO);
+		User user = (User)request.getSession().getAttribute("user");
+		if (user != null){
+			redisTemplate.opsForList().leftPush("search_record_"+user.getUid(),search);
+		}
+
 		return "paperListShow";
 	}
 	@RequestMapping("showPaperInfo")

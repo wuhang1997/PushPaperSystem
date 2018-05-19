@@ -4,10 +4,7 @@ package cn.zjut.wangjie.pushpaper.mapper;
 import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
 import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 import cn.zjut.wangjie.pushpaper.sql.PaperInfoSQLFactory;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -29,6 +26,14 @@ public interface PaperInfoDao {
 
     @Select("select * from paperInfo ")
 	List<PaperInfo> getAllPaper();
+
+    @Select("<script>" +
+                "select * from paperinfo where paper_id in" +
+                    "<foreach item='id' index ='index' collection='paperIdList' open='(' separator=',' close=')'>" +
+                        "#{id}" +
+                    "</foreach>" +
+            "</script>")
+    List<PaperInfo> getpushPaper(List<Integer> paperIdList);
 
 
 

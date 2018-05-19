@@ -20,7 +20,7 @@ public class UserController {
 		if(newUser!=null) {
 			request.getSession().setAttribute("user", newUser);
 			return "main";
-		}
+        }
 		else {
 			request.getSession().setAttribute("result", "账户名或密码错误");
 			return "login";
@@ -31,14 +31,18 @@ public class UserController {
 		if(userService.register(user)) {
 			request.getSession().setAttribute("user", user);
 			return "main";
-		}else return "regist";
+		}else{
+			return "regist";
+		}
 	}
 	
 	@RequestMapping("checkEmail.action")
 	public String checkEmail(String email,HttpServletRequest request) {
 		if(userService.isEmalExist(email)) {
 			return "exist";
-		}else return "notExist";
+		}else{
+			return "notExist";
+		}
 	}
 	
 }

@@ -12,13 +12,13 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  * @author: WangJie
  * @create: 2018-05-06 16:07
  **/
+
 /*
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "org/springframework/data/elasticsearch/repositories")
-static class ElasticSearchConfig {
+public class ElasticSearchConfig {
 
-    @Bean
-    public ElasticsearchOperations elasticsearchTemplate() {
-        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client());
+    static {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
     }
-}*/
+}
+*/
