@@ -87,7 +87,7 @@ public class ICMLCrawer implements PageProcessor{
            // paperInfoDao.addPaperInfo(paperInfo);
 
             redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
-            redisTemplate.expire("newPaperToPush",12L,TimeUnit.HOURS);
+            redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
            // log.info("\npaper："+paperInfo.toString());
            // elPaperService.savePaperInfo(paperInfo);
 

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @program: pushpaper
  * @description:
@@ -33,5 +35,10 @@ public class CollectionServiceImpl implements CollectionService {
         if (collectionDao.countCollectionByPaperIdAndUserId(collection)==1)
             return true;
         return false;
+    }
+
+    @Override
+    public List<Integer> getCollectionIdsByUid(Integer uid) {
+        return collectionDao.getCollectionIdsByUid(uid);
     }
 }

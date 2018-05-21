@@ -15,6 +15,6 @@ public interface ELPaperService {
     void savePaperInfo(PaperInfo paperInfo);
     List<PaperInfo> searchPaperInfo(String searchStr);
     PageDTO searchPaperInfoListByPage(PageDTO pageDTO,String searchContent);
-    List<PaperInfo> recommend();
+    List<PaperInfo> recommend(List<String> texts,List<Integer>paperIds,List<Integer> recommendedPaperIds);
 
 }

@@ -56,7 +56,7 @@ mail:
   host: smtp.163.com
   title:
     newPaperPush: 新的论文，了解一下！
-    recommendPush: 有篇论文，猜你喜欢！
+    recommendPaperPush: 有篇论文，猜你喜欢！
 
 mybatis:
   configuration:

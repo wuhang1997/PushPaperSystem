@@ -31,6 +31,7 @@ public class CollectionController {
         collection.setAddAt(System.currentTimeMillis());
         collection.setPaperId(paperId);
         collection.setUserId(user.getUid());
+        collection.setAddAt(System.currentTimeMillis());
         int result =collectionService.addCollection(collection);
         return result==1? "success": "fail";
     }

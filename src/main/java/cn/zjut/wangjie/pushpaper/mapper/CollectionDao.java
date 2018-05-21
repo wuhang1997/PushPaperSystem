@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @program: pushpaper
  * @description:
@@ -21,4 +23,7 @@ public interface CollectionDao {
     int deleteCollection(Collection collection);
     @Select("select count(*) from collection where paper_id=#{paperId} and user_id=#{userId}")
     int countCollectionByPaperIdAndUserId(Collection collection);
+
+    @Select("select paper_id from collection where user_id =#{uid}")
+    List<Integer> getCollectionIdsByUid(Integer uid);
 }

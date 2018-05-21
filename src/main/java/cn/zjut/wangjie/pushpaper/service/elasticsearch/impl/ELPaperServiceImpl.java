@@ -79,39 +79,10 @@ public class ELPaperServiceImpl implements ELPaperService {
     public PageDTO searchPaperInfoListByPage(PageDTO pageDTO,String searchContent){
 
 
-        /*
-        // Function Score Query
-        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
-                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("article", searchContent)),
-                        ScoreFunctionBuilders.weightFactorFunction(1000))
-                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("authors", searchContent)),
-                        ScoreFunctionBuilders.weightFactorFunction(800))
-                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("paperAbstract", searchContent)),
-                        ScoreFunctionBuilders.weightFactorFunction(300));
-
-
-        // 创建搜索 DSL 查询
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withPageable(pageable)
-                .withQuery(functionScoreQueryBuilder).build();
-
-        log.info("\n searchCity(): searchContent [" + searchContent + "] \n DSL  = \n " + searchQuery.getQuery().toString());
-
-
-        Page<PaperInfo> searchPageResults = elPaperInfoRepository.search(searchQuery);
-       */
-
-
-
-        //Page<PaperInfo> page =elPaperInfoRepository.findByArticleIsLikeOrAuthorsIsLikeOrPaperAbstractIsLike(searchContent,pageable);
-        //Page<PaperInfo> page = elPaperInfoRepository.findByArticle(searchContent,pageable);
-
-
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .should((QueryBuilders.matchQuery("article", searchContent)))
                 .should(QueryBuilders.matchQuery("authors", searchContent))
-                .should(QueryBuilders.matchQuery("paperAbstract", searchContent))
-                .must(QueryBuilders.matchQuery("website", "ICML"));
+                .should(QueryBuilders.matchQuery("paperAbstract", searchContent));
 
         Iterable<PaperInfo> paperInfoIterable=elPaperInfoRepository.search(boolQueryBuilder);
         Iterator<PaperInfo> iterator = paperInfoIterable.iterator();
@@ -150,16 +121,27 @@ public class ELPaperServiceImpl implements ELPaperService {
     }
 
     @Override
-    public List<PaperInfo> recommend() {
-        String[] texts = {" Lerrel Pinto, James Davidson, Rahul Sukthankar, Abhinav Gupta ; "," Alexander Kolesnikov, Christoph H. Lampert ;"};
-        String[] fields = {"authors","paperAbstract"};
+    public List<PaperInfo> recommend(List<String> searchContentList,List<Integer>collectionPaperIds,List<Integer> recommendedPaperIds) {
+       // String[] texts = {" Lerrel Pinto, James Davidson, Rahul Sukthankar, Abhinav Gupta ; "," Alexander Kolesnikov, Christoph H. Lampert ;"};
+        String[] fields = {"article","authors","paperAbstract"};
 
-        MoreLikeThisQueryBuilder.Item[] items = new MoreLikeThisQueryBuilder.Item[2];
-        items[0] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo","3");
-        items[1] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo","4");
+        int size = collectionPaperIds.size();
+
+        MoreLikeThisQueryBuilder.Item[] collectionItems = new MoreLikeThisQueryBuilder.Item[size];
+        for(int i=0;i<size;i++){
+            collectionItems[i] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo",collectionPaperIds.get(i).toString());
+        }
+        String[] texts = new String[searchContentList.size()];
+        texts = searchContentList.toArray(texts);
         MoreLikeThisQueryBuilder moreLikeThisQueryBuilder =
-                QueryBuilders.moreLikeThisQuery(fields,texts,items);
+                QueryBuilders.moreLikeThisQuery(fields,texts,collectionItems);
 
+        size = recommendedPaperIds.size();
+        MoreLikeThisQueryBuilder.Item[] recommendedItems = new MoreLikeThisQueryBuilder.Item[size];
+        for(int i = 0 ;i<size ; i++){
+            recommendedItems[i] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo",recommendedPaperIds.get(i).toString());
+        }
+        moreLikeThisQueryBuilder.unlike(recommendedItems);
         ClassLoader classLoader = getClass().getClassLoader();
         URL url = classLoader.getResource("stop_word.txt");
         Set<String> stopWords = new HashSet<String>();
