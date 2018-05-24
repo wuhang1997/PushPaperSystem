@@ -18,6 +18,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -85,6 +86,11 @@ public class ICMLCrawer implements PageProcessor{
                 }
             }
            // paperInfoDao.addPaperInfo(paperInfo);
+
+            Random random =new Random();
+            int id = random.nextInt(200);
+            paperInfo.setPaperId(id+1);
+
 
             redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
             redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);

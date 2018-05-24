@@ -33,9 +33,10 @@ public interface PaperInfoDao {
                         "#{id}" +
                     "</foreach>" +
             "</script>")
-    List<PaperInfo> getpushPaper(List<Integer> paperIdList);
+    List<PaperInfo> getpushPaper(@Param("paperIdList") List<Integer> paperIdList);
 
-
+    @Select("select article from paperinfo")
+    List<String> getAllPaperArticle();
 
 
 }

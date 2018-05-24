@@ -14,25 +14,25 @@
                      <span class="icon-bar"></span>
                      <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Admin Panel</a>
-                    <div class="nav-collapse collapse">
+                    <a class="brand" href="${pageContext.request.contextPath }/main.jsp">PaperPush</a>
+                   <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> Vincent Gabriel <i class="caret"></i>
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> ${user.email} <i class="caret"></i>
 
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a tabindex="-1" href="#">用户中心</a>
+                                        <a tabindex="-1" href="${pageContext.request.contextPath }/paper-collection/show?currentPage=1">我的收藏</a>
                                     </li>
                                     <li class="divider"></li>
                                     <li>
-                                        <a tabindex="-1" href="login.html">注销</a>
+                                        <a tabindex="-1" href="${pageContext.request.contextPath }/userController/logout">注销</a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
-                        <ul class="nav">
+                      <%--  <ul class="nav">
                             <li class="active">
                                 <a href="#">Dashboard</a>
                             </li>
@@ -111,9 +111,10 @@
                                     </li>
                                 </ul>
                             </li>
-                        </ul>
+                        </ul>--%>
                     </div>
                     <!--/.nav-collapse -->
+
                 </div>
             </div>
       

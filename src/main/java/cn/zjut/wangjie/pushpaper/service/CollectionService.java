@@ -1,6 +1,7 @@
 package cn.zjut.wangjie.pushpaper.service;
 
 import cn.zjut.wangjie.pushpaper.pojo.Collection;
+import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface CollectionService {
     int deleteCollection(Collection collection);
     boolean isCollection(Collection collection);
     List<Integer> getCollectionIdsByUid(Integer uid);
+    List<PaperInfo>getCollectionsByUid(Integer uid);
 }

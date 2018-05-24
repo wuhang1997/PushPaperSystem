@@ -3,6 +3,7 @@ package cn.zjut.wangjie.pushpaper.service.elasticsearch.impl;
 import cn.zjut.wangjie.pushpaper.mapper.ELPaperInfoRepository;
 import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
 import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
+import cn.zjut.wangjie.pushpaper.process.WordsProcess;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -136,29 +137,15 @@ public class ELPaperServiceImpl implements ELPaperService {
         MoreLikeThisQueryBuilder moreLikeThisQueryBuilder =
                 QueryBuilders.moreLikeThisQuery(fields,texts,collectionItems);
 
-        size = recommendedPaperIds.size();
+      /*  size = recommendedPaperIds.size();
         MoreLikeThisQueryBuilder.Item[] recommendedItems = new MoreLikeThisQueryBuilder.Item[size];
         for(int i = 0 ;i<size ; i++){
             recommendedItems[i] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo",recommendedPaperIds.get(i).toString());
         }
         moreLikeThisQueryBuilder.unlike(recommendedItems);
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource("stop_word.txt");
-        Set<String> stopWords = new HashSet<String>();
-        try {
-            BufferedReader bf = new BufferedReader(new FileReader(url.getFile()));
-            String line = null;
-            while((line=bf.readLine())!=null) {
-                stopWords.add(line.trim().toUpperCase());
-            }
-            bf.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+      */
+        Set<String> stopWords = WordsProcess.StopWords();
+
         String[] words = new String[stopWords.size()];
         int i =0;
         for (String word:stopWords
@@ -181,10 +168,20 @@ public class ELPaperServiceImpl implements ELPaperService {
         List<PaperInfo> paperInfoList = new ArrayList<>(16);
 
 
-
+        PaperInfo paperInfo;
         while(iterator.hasNext()){
 
-            paperInfoList.add(iterator.next());
+            paperInfo = iterator.next();
+            boolean has = false;
+            for (Integer id:recommendedPaperIds){
+                if (paperInfo.getPaperId().equals(id)){
+                    has = true;
+                }
+            }
+            if (!has){
+                paperInfoList.add(iterator.next());
+            }
+
 
         }
 

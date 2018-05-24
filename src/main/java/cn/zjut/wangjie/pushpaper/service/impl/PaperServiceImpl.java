@@ -46,6 +46,12 @@ public class PaperServiceImpl implements PaperService {
 		
 		return paperInfoDao.getPaperList(pageDTO);
 	}
+
+	@Override
+	public List<String> getAllPaperArticle() {
+		return paperInfoDao.getAllPaperArticle();
+	}
+
 	@Override
 	public int countPaperByWebsite(String website) {
 		
@@ -65,6 +71,7 @@ public class PaperServiceImpl implements PaperService {
         if (newPaperToPushList == null){
             return;
         }
+
         List<PaperInfo> paperInfoList = paperInfoDao.getpushPaper(newPaperToPushList);
         String emailContent = generatePushContent(paperInfoList);
         List<User> userList = userDao.getAllUser();

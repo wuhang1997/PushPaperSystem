@@ -1,11 +1,9 @@
 package cn.zjut.wangjie.pushpaper.controller;
 
 
-import cn.zjut.wangjie.pushpaper.pojo.Collection;
-import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
-import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
-import cn.zjut.wangjie.pushpaper.pojo.User;
+import cn.zjut.wangjie.pushpaper.pojo.*;
 import cn.zjut.wangjie.pushpaper.service.CollectionService;
+import cn.zjut.wangjie.pushpaper.service.PaperBrowseHistoryService;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 
@@ -37,6 +35,8 @@ public class PaperController {
     private CollectionService collectionService;
 	@Autowired
 	private RedisTemplate redisTemplate;
+	@Autowired
+	private PaperBrowseHistoryService paperBrowseHistoryService;
 	@Value("${page.pageSize}")
 	private int pageSize;
 	@RequestMapping("/{website}/paperShow.action")
@@ -100,6 +100,11 @@ public class PaperController {
         collection.setUserId(user.getUid());
 		boolean isCollected = collectionService.isCollection(collection);
 		request.setAttribute("isCollected",isCollected);
+		PaperBrowseHistory paperBrowseHistory = new PaperBrowseHistory();
+		paperBrowseHistory.setAddAt(System.currentTimeMillis());
+		paperBrowseHistory.setUserId(user.getUid());
+		paperBrowseHistory.setPaperId(paperId);
+		paperBrowseHistoryService.add(paperBrowseHistory);
 		return "paperInfoShow";
 	}
 	@RequestMapping(value = "/{file}/download.action")

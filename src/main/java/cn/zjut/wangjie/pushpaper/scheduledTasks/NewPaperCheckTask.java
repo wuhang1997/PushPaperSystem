@@ -22,7 +22,7 @@ import java.io.File;
 public class NewPaperCheckTask {
     @Autowired
     private ICMLCrawer icmlCrawer;
-    @Scheduled(cron = "0 10 12 * * ?")
+    @Scheduled(cron = "0 16 18 * * ?")
     public void NewICMLPaperCheck(){
         String filePath ="D:/logs/paperPush/urls/icml.cc.urls.txt";
         File file = new File(filePath);

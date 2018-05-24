@@ -2,6 +2,7 @@ package cn.zjut.wangjie.pushpaper.service.impl;
 
 import cn.zjut.wangjie.pushpaper.mapper.CollectionDao;
 import cn.zjut.wangjie.pushpaper.pojo.Collection;
+import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 import cn.zjut.wangjie.pushpaper.service.CollectionService;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public List<Integer> getCollectionIdsByUid(Integer uid) {
         return collectionDao.getCollectionIdsByUid(uid);
+    }
+
+    @Override
+    public List<PaperInfo> getCollectionsByUid(Integer uid) {
+
+        return collectionDao.getCollectionsByUid(uid);
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PaperService {
 	List<PaperInfo> getPaperList(PageDTO pageDto);
+	List<String> getAllPaperArticle();
 	int countPaperByWebsite(String website);
 	PaperInfo getPaperInfoById(Integer id);
 
