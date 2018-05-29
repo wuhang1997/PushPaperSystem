@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface CommentDao {
     @Insert("insert into comment values(null , #{paperId} , #{userId} , #{content} , #{addAt} ")
-    int addNote(Comment comment);
+    int addComment(Comment comment);
 
     @Select("select * from comment where  paper_id = #{paperId}")
     List<Comment> listCommentByPaperId(Integer paperId);

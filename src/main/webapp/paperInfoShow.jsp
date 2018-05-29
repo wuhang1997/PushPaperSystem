@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>论文收藏</title>
+    <title>论文详情</title>
     <!-- Bootstrap -->
     <link
             href="${pageContext.request.contextPath }/bootstrap/css/bootstrap.min.css"
@@ -87,6 +87,39 @@
                                 </div>
 
                             </fieldset>
+
+                        <fieldset>
+                            <legend>评论</legend>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="data_list comment_list">
+                                        <div class="dataHeader">用户评论</div>
+                                        <div class="commentDatas">
+                                            <c:forEach var="comment" items="${commentList }">
+                                                <div class="comment">
+                                                    <font>${comment.userName }：</font>${comment.content }&nbsp;&nbsp;&nbsp;[&nbsp;<fmt:formatDate value="${comment.addAt }" type="long" pattern="yyyy-MM-dd HH:mm:ss"/>&nbsp;]
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+
+                                    <div class="publish_list">
+                                        <form action="${pageContext.request.contextPath}/comment/add" method="post" onsubmit="return checkComment()">
+                                            <div>
+                                                <input type="hidden" value="${paper.paperId }" id="paperId" name="paperId"/>
+                                                <c:if test="${!empty user }"><input type="hidden" value="${user.uid }" id="userId" name="userId"/></c:if>
+
+                                                <textarea style="width: 98%" rows="3" id="content" name="content"></textarea>
+                                            </div>
+                                            <div class="publishButton">
+                                                <button class="btn btn-primary" type="submit">发表评论</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
 
 
                     </div>
