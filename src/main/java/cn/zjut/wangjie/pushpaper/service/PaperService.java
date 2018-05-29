@@ -13,7 +13,7 @@ public interface PaperService {
 	int countPaperByWebsite(String website);
 	PaperInfo getPaperInfoById(Integer id);
 
-
+	List<PaperInfo> getAllPaper();
 	void pushRecommendPaper();
 	void pushNewPaperToAllUser();
 }

@@ -140,7 +140,7 @@ table.display {
 	 * border-spacing: 0; is one possible option. Conditional-css.com is
 	 * useful for this kind of thing
 	 *
-	 * Further note IE 6/7 has problems when calculating widths with border width.
+	 * Further Note IE 6/7 has problems when calculating widths with border width.
 	 * It subtracts one px relative to the other browsers from the first column, and
 	 * adds one to the end...
 	 *

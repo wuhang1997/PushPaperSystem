@@ -18,6 +18,9 @@ public interface PaperInfoDao {
 
 	@Select(" select * from paperinfo where website=#{contentFlag} limit #{begin},#{pageSize}")
 	List<PaperInfo> getPaperList(PageDTO pageDto);
+
+
+
     @Select("select count(*) from paperinfo where website=#{flag}")
 	int countPaperByWebsite(String website);
 

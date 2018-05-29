@@ -21,7 +21,7 @@ public class PaperAnalysisTask {
 
     @Autowired
     private PaperService paperService;
-    @Scheduled(cron = "0 14 14 * * ?")
+    @Scheduled(cron = "0 29 9 * * ?")
     public void paperArticleAnalysisTask(){
         List<String> paperArticleList = paperService.getAllPaperArticle();
         WordsProcess.writeWordsDependency(paperArticleList);

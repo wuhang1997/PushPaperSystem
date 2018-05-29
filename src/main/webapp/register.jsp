@@ -36,6 +36,10 @@
 								<input type="text" name="name" id="name" class="ipt"
 									placeholder="用戶名" required>
 						</div>
+						<div class="group-ipt preferences">
+							<input type="text" name="preferences" id="preferences" class="ipt" placeholder="研究方向" required>
+
+						</div>
 						<div class="group-ipt password">
 								<input type="password" name="password" id="password" class="ipt"
 									placeholder="设置登录密码" required>

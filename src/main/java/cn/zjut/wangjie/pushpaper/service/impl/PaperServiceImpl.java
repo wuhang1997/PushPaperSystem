@@ -12,6 +12,8 @@ import cn.zjut.wangjie.pushpaper.pojo.User;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import cn.zjut.wangjie.pushpaper.util.SendEmailUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,7 +45,9 @@ public class PaperServiceImpl implements PaperService {
 
 	@Override
 	public List<PaperInfo> getPaperList(PageDTO pageDTO) {
-		
+
+		/*Page page = PageHelper.startPage(pageDTO.getCurrentPage(),pageDTO.getPageSize());
+		List<PaperInfo> paperInfoList = paperInfoDao.*/
 		return paperInfoDao.getPaperList(pageDTO);
 	}
 
@@ -63,7 +67,10 @@ public class PaperServiceImpl implements PaperService {
 		return paperInfoDao.getPaperInfoById(id);
 	}
 
-
+	@Override
+	public List<PaperInfo> getAllPaper() {
+		return paperInfoDao.getAllPaper();
+	}
 
 	@Override
 	public void pushNewPaperToAllUser() {

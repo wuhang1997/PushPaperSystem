@@ -3,7 +3,7 @@
 <configuration status="warn" strict="true">
 
     <Properties>
-        <Property name="log.level" value="debug"/>
+        <Property name="log.level" value="info"/>
         <Property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p  %c.%M:%L  :  %m%n"/>
         <Property name="log.path" value="D:/logs/paperPush"/>
         <Property name="log.name" value="paperPush"/>

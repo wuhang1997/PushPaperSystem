@@ -32,16 +32,16 @@ public class PushPaperToEmailTask {
 
     /**
      * 定时推送新paper
-     * @author wangjie
+     *
      */
-    @Scheduled(cron = "0 17 18 * * ?")
+    @Scheduled(cron = "0 57 18 * * ?")
     public void pushNewPaperToAllUser(){
 
         paperService.pushNewPaperToAllUser();
 
     }
 
-    @Scheduled(cron = "0 53 17 * * ?")
+    @Scheduled(cron = "0 30 9 * * ?")
     public void pushRecommendPaper(){
 
 

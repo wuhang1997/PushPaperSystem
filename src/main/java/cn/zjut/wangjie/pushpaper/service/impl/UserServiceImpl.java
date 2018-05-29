@@ -12,17 +12,17 @@ import javax.annotation.Resource;
 @Service
 public class UserServiceImpl implements UserService {
 	@Resource private UserDao userDao;
-	 
 
+	@Override
 	public boolean register (User user) {
 		user.setPassword(MD5Util.md5(user.getPassword()));
 		if(userDao.addUser(user)==1) {
 			return true;
 		}
-		else return false;
+		else{ return false;}
 	}
 
-
+	@Override
 	public User login(User user) {
 		user.setPassword(MD5Util.md5(user.getPassword()));
 		User newUser = userDao.findUser(user);
@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserService {
 			
 			return newUser;
 		}
-		else return null;
+		else{ return null;}
 	}
-	
 
+    @Override
 	public boolean isEmalExist(String email) {
 		User user = new User();
 		user.setEmail(email);
