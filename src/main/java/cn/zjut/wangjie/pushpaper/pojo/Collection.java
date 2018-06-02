@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class Collection {
     private Integer id;
     private Integer paperId;
+    private String  article;
+    private String  authors;
+    private String  website;
     private Integer userId;
     private Long addAt;
 }

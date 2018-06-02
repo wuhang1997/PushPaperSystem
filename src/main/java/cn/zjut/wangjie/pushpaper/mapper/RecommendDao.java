@@ -19,4 +19,6 @@ public interface RecommendDao {
     List<Integer> getRecommendedPaperIdsByUid(Integer uid);
     @Insert("insert into recommend values(null,#{paperId},#{userId},#{addAt})")
     int addRecommend(Recommend recommend);
+    @Select("select paperinfo.paper_id , article , authors ,website, add_at ,website from recommend inner join paperinfo on recommend.paper_id = paperinfo.paper_id where user_id = #{userId}")
+    List<Recommend>listRecommendByUserId(Integer userId);
 }

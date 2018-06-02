@@ -12,6 +12,9 @@ import lombok.Data;
 public class Comment {
     private Integer id;
     private Integer paperId;
+    private String  article;
+    private String  authors;
+    private String  website;
     private Integer userId;
     private String name;
     private Long addAt;

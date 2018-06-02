@@ -45,6 +45,7 @@ public class PaperController {
 	private int pageSize;
 	@Value("${paperPath}")
 	private String paperPath;
+	
 	@RequestMapping("/{website}/paperShow.action")
 	public String paperList(@PathVariable(value = "website") String website) {
 

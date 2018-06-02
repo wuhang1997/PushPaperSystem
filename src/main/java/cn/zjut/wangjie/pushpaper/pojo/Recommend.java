@@ -12,6 +12,9 @@ import lombok.Data;
 public class Recommend {
     private Integer id ;
     private Integer paperId;
+    private String  article;
+    private String  authors;
+    private String  website;
     private Integer userId;
     private Long    addAt;
 }

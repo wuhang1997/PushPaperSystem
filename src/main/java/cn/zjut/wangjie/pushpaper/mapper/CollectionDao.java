@@ -28,6 +28,6 @@ public interface CollectionDao {
     @Select("select paper_id from collection where user_id =#{uid}")
     List<Integer> getCollectionIdsByUid(Integer uid);
 
-    @Select ("select collection.paper_id , article from paperinfo inner join collection on collection.paper_id = paperinfo.paper_id where user_id = #{uid}")
+    @Select ("select collection.paper_id , article , authors , website from paperinfo inner join collection on collection.paper_id = paperinfo.paper_id where user_id = #{uid}")
     List<PaperInfo> getCollectionsByUid(Integer uid);
 }

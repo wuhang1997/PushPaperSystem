@@ -24,6 +24,10 @@
 					浏览历史</a></li>
 			<li><a href="${pageContext.request.contextPath }/paper-collection/show?currentPage=1"><i class="icon-chevron-right"></i>
 					我的收藏</a></li>
+			<li><a href="${pageContext.request.contextPath }/comment/list-comment?currentPage=1"><i class="icon-chevron-right"></i>
+				我的评论</a></li>
+			<li><a href="${pageContext.request.contextPath }/recommend/list-recommend?currentPage=1"><i class="icon-chevron-right"></i>
+				推荐历史</a></li>
 
 		</ul>
 	</div>

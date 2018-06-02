@@ -57,6 +57,7 @@
                         <!-- <th>新闻类别</th> -->
                         <th>作者</th>
                         <th>来源</th>
+                        <th>论文详情</th>
                         <th>浏览时间</th>
                     </tr>
                     <c:forEach var="history" items="${historyPage.contentList }"
@@ -74,6 +75,9 @@
                             <td>
                                 ${history.website}
                             </td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath }/paperController/showPaperInfo?id=${history.paperId}">点我查看</a>
+                                    </td>
                             <td>
 
                                 <jsp:setProperty name="timestamp" property="time" value="${history.addAt}"/>

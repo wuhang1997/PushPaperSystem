@@ -55,7 +55,7 @@ public class CommentController {
         commentPageDTO.setTotalPage(page.getPages());
         commentPageDTO.setContentList(commentList);
         request.getSession().setAttribute("commentPage", commentPageDTO);
-        return "commentList";
+        return "commentListShow";
     }
 
 }

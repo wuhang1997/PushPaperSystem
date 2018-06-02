@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="timestamp" class="java.util.Date"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>论文收藏</title>
+    <title>推荐记录</title>
     <!-- Bootstrap -->
     <link
             href="${pageContext.request.contextPath }/bootstrap/css/bootstrap.min.css"
@@ -52,34 +54,34 @@
                         <!-- <th><input type="checkbox" id="checkedAll" /></th> -->
 
                         <th>论文标题</th>
+                        <!-- <th>新闻类别</th> -->
                         <th>作者</th>
-                        <th>详情</th>
-                        <th>操作</th>
+                        <th>来源</th>
+                        <th>论文详情</th>
+                        <th>推荐时间</th>
                     </tr>
-                    <c:forEach var="collection" items="${collectionPage.contentList }"
+                    <c:forEach var="recommend" items="${recommendPage.contentList }"
                                varStatus="status">
                         <tr>
                                 <%-- <td><input type="checkbox" name="ids"
                                     value="${collectionBack.id}" /></td> --%>
 
-                            <td>${collection.article }</td>
+                            <td>${recommend.article }</td>
+
+                            <td>
+                                    ${recommend.authors}
+                            </td>
+
+                            <td>
+                                    ${recommend.website}
+                            </td>
                                     <td>
-                                            ${collection.authors}
+                                        <a href="${pageContext.request.contextPath }/paperController/showPaperInfo?id=${recommend.paperId}">点我查看</a>
                                     </td>
                             <td>
-                                <a href="${pageContext.request.contextPath }/paperController/showPaperInfo?id=${collection.paperId}">点我查看</a>
-                            </td>
-                                <%-- <td>${collectionBack.title }</td> --%>
-                                <%-- <td>${collectionBack.newsType.typeName }</td> --%>
-                                <%-- <td><fmt:formatDate value="${newsBack.publishDate }"
-                                        type="date" pattern="yyyy-MM-dd" /></td>
-                                <td><button class="btn btn-mini btn-info" type="button"
-                                        onclick="javascript:window.location.href='${pageContext.request.contextPath }/newsController/goUpdateNewsUI.action?newsId=${newsBack.newsId}'">修改</button>&nbsp; --%>
-                            <td>
-                                <button class="btn btn-mini btn-danger" type="button"
-                                        onclick="collectionDelete(${collection.paperId})">删除
-                                </button>
 
+                                <jsp:setProperty name="timestamp" property="time" value="${recommend.addAt}"/>
+                                <fmt:formatDate value="${timestamp}" pattern="yyyy-MM-dd hh:mm:ss" />
                             </td>
                         </tr>
                     </c:forEach>
@@ -89,30 +91,30 @@
             <div class="pagination pagination-centered">
                 <ul>
                     <li><a
-                            href="${pageContext.request.contextPath }/paper-collection/show?currentPage=1">首页</a>
+                            href="${pageContext.request.contextPath }/recommend/list-recommend?currentPage=1">首页</a>
                     </li>
 
-                    <c:if test="${collectionPage.currentPage>1 }">
+                    <c:if test="${recommendPage.currentPage>1 }">
                         <li><a
-                                href="${pageContext.request.contextPath }/paper-collection/show?currentPage=${collectionPage.currentPage-1}">上一页</a>
+                                href="${pageContext.request.contextPath }/recommend/list-recommend?currentPage=${recommendpage.currentPage-1}">上一页</a>
                         </li>
                     </c:if>
-                    <c:if test="${collectionPage.currentPage<=1 }">
+                    <c:if test="${recommendPage.currentPage<=1 }">
                         <li class='disabled'><a href='#'>上一页</a></li>
                     </c:if>
-                    <li class='disabled'><a>第${collectionPage.currentPage }页</a></li>
-                    <li class='disabled'><a>共${collectionPage.totalPage }页</a></li>
-                    <c:if test="${collectionPage.currentPage<collectionPage.totalPage }">
+                    <li class='disabled'><a>第${recommendPage.currentPage }页</a></li>
+                    <li class='disabled'><a>共${recommendPage.totalPage }页</a></li>
+                    <c:if test="${recommendPage.currentPage<recommendPage.totalPage }">
                         <li><a
-                                href="${pageContext.request.contextPath }/paper-collection/show?currentPage=${collectionPage.currentPage+1}">下一页</a>
+                                href="${pageContext.request.contextPath }/recommend/list-recommend?currentPage=${recommendPage.currentPage+1}">下一页</a>
                         </li>
                     </c:if>
-                    <c:if test="${collectionPage.currentPage==collectionPage.totalPage }">
+                    <c:if test="${recommendPage.currentPage==recommendPage.totalPage }">
                         <li class='disabled'><a href='#'>下一页</a></li>
                     </c:if>
 
                     <li><a
-                            href="${pageContext.request.contextPath }/paper-collection/show?currentPage=${collectionPage.totalPage}">尾页</a>
+                            href="${pageContext.request.contextPath }/recommend/list-recommend?currentPage=${recommendPage.totalPage}">尾页</a>
                     </li>
 
 
@@ -124,26 +126,4 @@
     </div>
 </div>
 </body>
-
-<script type="text/javascript">
-    function collectionDelete(paperId) {
-        if (confirm("确认要删除这条收藏吗？")) {
-            $.post("${pageContext.request.contextPath}/paper-collection/delete", {paperId: paperId},
-                function (result) {
-
-
-                    if (result == "success") {
-                        alert("删除成功!");
-                        window.location.href = "${pageContext.request.contextPath}/paper-collection/show?currentPage=1";
-                    } else {
-                        alert("删除失败");
-                    }
-                }
-            );
-        }
-    }
-
-
-</script>
-
 </html>
