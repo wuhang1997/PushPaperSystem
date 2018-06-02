@@ -3,6 +3,7 @@ package cn.zjut.wangjie.pushpaper.controller;
 
 import cn.zjut.wangjie.pushpaper.pojo.*;
 import cn.zjut.wangjie.pushpaper.service.CollectionService;
+import cn.zjut.wangjie.pushpaper.service.CommentService;
 import cn.zjut.wangjie.pushpaper.service.PaperBrowseHistoryService;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/paperController")
@@ -34,11 +36,15 @@ public class PaperController {
 	@Autowired
     private CollectionService collectionService;
 	@Autowired
+	private CommentService commentService;
+	@Autowired
 	private RedisTemplate redisTemplate;
 	@Autowired
 	private PaperBrowseHistoryService paperBrowseHistoryService;
 	@Value("${page.pageSize}")
 	private int pageSize;
+	@Value("${paperPath}")
+	private String paperPath;
 	@RequestMapping("/{website}/paperShow.action")
 	public String paperList(@PathVariable(value = "website") String website) {
 
@@ -105,6 +111,9 @@ public class PaperController {
 		paperBrowseHistory.setUserId(user.getUid());
 		paperBrowseHistory.setPaperId(paperId);
 		paperBrowseHistoryService.add(paperBrowseHistory);
+
+		List<Comment> comments = commentService.listCommentByPaperId(paperId);
+		request.setAttribute("commentList",comments);
 		return "paperInfoShow";
 	}
 	@RequestMapping(value = "/{file}/download.action")
@@ -117,7 +126,7 @@ public class PaperController {
                  + fileName);
          try {
              
-             InputStream inputStream = new FileInputStream(new File(file));
+             InputStream inputStream = new FileInputStream(new File(paperPath+file));
 
              OutputStream os = response.getOutputStream();
              byte[] b = new byte[2048];

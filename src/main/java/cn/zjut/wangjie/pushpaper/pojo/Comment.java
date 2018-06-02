@@ -13,6 +13,7 @@ public class Comment {
     private Integer id;
     private Integer paperId;
     private Integer userId;
+    private String name;
     private Long addAt;
     private String content;
 }

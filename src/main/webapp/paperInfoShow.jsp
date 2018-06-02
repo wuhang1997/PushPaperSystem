@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="timestamp" class="java.util.Date"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -97,7 +99,13 @@
                                         <div class="commentDatas">
                                             <c:forEach var="comment" items="${commentList }">
                                                 <div class="comment">
-                                                    <font>${comment.userName }：</font>${comment.content }&nbsp;&nbsp;&nbsp;[&nbsp;<fmt:formatDate value="${comment.addAt }" type="long" pattern="yyyy-MM-dd HH:mm:ss"/>&nbsp;]
+
+                                                       <jsp:setProperty name="timestamp" property="time" value="${comment.addAt }"/>
+                                                       <fmt:formatDate value="${timestamp}" pattern="yyyy-MM-dd hh:mm:ss" />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;  ${comment.name }：
+                                                           ${comment.content }
+
+
                                                 </div>
                                             </c:forEach>
                                         </div>
@@ -203,5 +211,17 @@
 
 
 </script>
-
+<
+<script !src="text/javascript">
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+</script>
 </html>

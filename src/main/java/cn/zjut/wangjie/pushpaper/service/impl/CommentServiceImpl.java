@@ -29,4 +29,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listCommentByPaperId(Integer paperId) {
         return commentDao.listCommentByPaperId(paperId);
     }
+
+    @Override
+    public List<Comment> listCommentByUserId(Integer userId) {
+        return commentDao.listCommentByUserId(userId);
+    }
 }

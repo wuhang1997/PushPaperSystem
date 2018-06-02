@@ -143,4 +143,10 @@ public class ElasticSearchTest {
 
     }
 
+    @Test
+    public void test(){
+        //PaperInfo p1 =(PaperInfo)elPaperInfoRepository.findById(138);
+        log.info(elPaperInfoRepository.findById(138).toString());
+        log.info(elPaperInfoRepository.findById(207).toString());
+    }
 }

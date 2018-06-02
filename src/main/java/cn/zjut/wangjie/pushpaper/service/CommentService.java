@@ -9,4 +9,5 @@ public interface CommentService {
     int addComment(Comment comment);
 
     List<Comment> listCommentByPaperId(Integer paperId);
+    List<Comment> listCommentByUserId(Integer userId);
 }

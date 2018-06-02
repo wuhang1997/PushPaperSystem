@@ -9,14 +9,14 @@ import java.util.List;
 
 @Mapper
 public interface CommentDao {
-    @Insert("insert into comment values(null , #{paperId} , #{userId} , #{content} , #{addAt} ")
+    @Insert("insert into comment values(null , #{paperId} , #{userId} , #{content} , #{addAt} )")
     int addComment(Comment comment);
 
-    @Select("select * from comment where  paper_id = #{paperId}")
+    @Select("select name , content , comment.add_at from comment inner join user on user_id = uid where  paper_id = #{paperId} order by add_at desc")
     List<Comment> listCommentByPaperId(Integer paperId);
 
-    @Select("select * from comment where user_id = #{userId} and paper_id = #{paperId}")
-    List<Comment> listCommentByPaperIdAndUserId(@Param("userId") Integer userId , @Param("paperId") Integer paperId);
+    @Select("select comment.paper_id , article , authors , website from comment inner join paperinfo on comment.paperId = paperinfo.paper_id where user_id = #{userId} order by add_at desc ")
+    List<Comment> listCommentByUserId(@Param("userId") Integer userId );
 
 
 }
