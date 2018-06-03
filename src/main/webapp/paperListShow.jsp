@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>论文列表</title>
+    <link
+            href="${pageContext.request.contextPath }/style/news.css"
+            rel="stylesheet" media="screen">
     <!-- Bootstrap -->
     <link
             href="${pageContext.request.contextPath }/bootstrap/css/bootstrap.min.css"
@@ -118,37 +122,22 @@
             </c:forEach>
 
 
-            <!--
-				<c:forEach var="paperInfo" items="${pageDTO.contentList }">
-					<div class="row-fluid">
-						<div class="block">
-							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">
-									<a
-										href="${pageContext.request.contextPath }/paperController/paperInfoShow.action">${paperInfo.article}</a>
-								</div>
-							</div>
-							<div class="block-content collapse in">
-								<div class="span12">
-									<div class="paper paperAbstract">
-						
-										摘要 <br>${paperInfo.paperAbstract }
-									</div>
-									<div class="paper authors">
-										
-										作者:${paperInfo.authors }
-									</div>
-									<div class="paper website">
-									
-										来源: ${paperInfo.website }
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-      -->
-            <!-- /block -->
+            <div class="span3">
+
+
+                <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                    <li>热点论文</li>
+                    <c:forEach var="hotPaper" items="${top10Paper }">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/paperController/showPaperInfo?id=${hotPaper.paperId}"><p>${fn:substring(hotPaper.article,0,40) }...</a>
+                        </li>
+                    </c:forEach>
+
+                </ul>
+
+
+            </div>
+
 
             <div class="pagination pagination-centered">
                 <ul>

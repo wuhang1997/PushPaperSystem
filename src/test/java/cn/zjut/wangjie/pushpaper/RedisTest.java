@@ -1,5 +1,8 @@
 package cn.zjut.wangjie.pushpaper;
 
+import cn.zjut.wangjie.pushpaper.process.entity.Node;
+import cn.zjut.wangjie.pushpaper.process.entity.Word;
+import cn.zjut.wangjie.pushpaper.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplateUtil redisTemplateUtil;
     @Test
     public void testList(){
         redisTemplate.opsForList().leftPush("test",123);
@@ -40,5 +45,18 @@ public class RedisTest {
         redisTemplate.opsForList().rightPush("newPaperToPush",12);
         redisTemplate.opsForList().rightPush("newPaperToPush",13);
         redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
+
+
+    }
+    @Test
+    public void zsetTest(){
+
+       // Node node = new Node();
+        redisTemplate.opsForZSet().add("t","tt",5);
+        redisTemplate.opsForZSet().add("t","tt",9);
+
+        log.info(redisTemplate.opsForZSet().score("t","tt").toString());
+        log.info(redisTemplate.opsForZSet().range("t",0 , -1).toString());
+     // redisTemplate.delete("t");
     }
 }

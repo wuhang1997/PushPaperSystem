@@ -2,9 +2,11 @@ package cn.zjut.wangjie.pushpaper.service;
 
 
 
+
 import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
 import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PaperService {
@@ -16,4 +18,11 @@ public interface PaperService {
 	List<PaperInfo> getAllPaper();
 	void pushRecommendPaper();
 	void pushNewPaperToAllUser();
+
+	int addClick(Integer paperId);
+
+	List<PaperInfo> getAllPaperScore();
+
+	List<PaperInfo> getPaperByPaperIds(Collection paperIds);
+	int updatePaperScore(Integer paperId , Double score);
 }

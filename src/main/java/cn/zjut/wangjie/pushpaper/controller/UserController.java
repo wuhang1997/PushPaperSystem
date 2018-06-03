@@ -21,6 +21,7 @@ public class UserController {
 	public String login(User user  ) {
 		System.out.println(user.toString());
 		User newUser= userService.login(user);
+		//System.out.println(request.getSession().getId());
 		if(newUser!=null) {
 			request.getSession().setAttribute("user", newUser);
 			return "main";

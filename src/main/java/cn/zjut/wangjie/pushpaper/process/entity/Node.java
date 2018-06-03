@@ -3,6 +3,8 @@ package cn.zjut.wangjie.pushpaper.process.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Random;
+
 /**
  * @program: pushpaper
  * @description:
@@ -14,6 +16,10 @@ import lombok.NoArgsConstructor;
 public class Node {
     private String id;
     private String label;
-    private Double size;
+    private double size;
+    private double x;
+    private double y;
+
+
 
 }

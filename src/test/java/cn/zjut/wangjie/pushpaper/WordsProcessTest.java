@@ -1,5 +1,6 @@
 package cn.zjut.wangjie.pushpaper;
 
+import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 import cn.zjut.wangjie.pushpaper.process.WordsProcess;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @program: pushpaper
@@ -33,7 +36,24 @@ public class WordsProcessTest {
 
     @Test
     public void writeToTextFileTest(){
-        List<String> paperArticleList = paperService.getAllPaperArticle();
-        WordsProcess.writeWordsDependency(paperArticleList);
+
+        List<PaperInfo> paperInfoList = paperService.getAllPaper();
+        List<String>texts = new ArrayList<>(500);
+        for (PaperInfo paperInfo : paperInfoList){
+            texts.add(paperInfo.getArticle() + " " +paperInfo.getArticle());
+        }
+        WordsProcess.writeWordsDependency(texts);
+    }
+    @Test
+    public void writeArticleToTextFileTest(){
+
+
+        List<String >articles = paperService.getAllPaperArticle();
+        WordsProcess.writeWordsDependency(articles);
+    }
+    @Test
+    public  void paperRankTest(){
+        Random random = new Random();
+
     }
 }

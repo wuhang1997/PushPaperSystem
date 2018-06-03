@@ -6,6 +6,7 @@ import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 import cn.zjut.wangjie.pushpaper.sql.PaperInfoSQLFactory;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,14 +33,21 @@ public interface PaperInfoDao {
 
     @Select("<script>" +
                 "select * from paperinfo where paper_id in" +
-                    "<foreach item='id' index ='index' collection='paperIdList' open='(' separator=',' close=')'>" +
+                    "<foreach item='id' index ='index' collection='paperIds' open='(' separator=',' close=')'>" +
                         "#{id}" +
                     "</foreach>" +
             "</script>")
-    List<PaperInfo> getpushPaper(@Param("paperIdList") List<Integer> paperIdList);
+    List<PaperInfo> getPaperByPaperIds(@Param("paperIds") Collection<Integer> paperIdList);
 
     @Select("select article from paperinfo")
     List<String> getAllPaperArticle();
 
+    @Update("update paperinfo set click = click + 1 where paper_id =#{paperId}")
+    int addClick(Integer paperId);
 
+    @Select("select paper_id , score from paperinfo ")
+    List<PaperInfo> getAllPaperScore();
+
+    @Update("update paperinfo set score = #{score} where paper_id =#{paperId}")
+    int updatePaperScore(@Param("paperId") Integer paperId ,@Param("score") Double score);
 }

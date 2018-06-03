@@ -112,9 +112,11 @@ public class PaperController {
 		paperBrowseHistory.setUserId(user.getUid());
 		paperBrowseHistory.setPaperId(paperId);
 		paperBrowseHistoryService.add(paperBrowseHistory);
-
+		//获取评论
 		List<Comment> comments = commentService.listCommentByPaperId(paperId);
 		request.setAttribute("commentList",comments);
+		//点击量加一
+		paperService.addClick(paperId);
 		return "paperInfoShow";
 	}
 	@RequestMapping(value = "/{file}/download.action")

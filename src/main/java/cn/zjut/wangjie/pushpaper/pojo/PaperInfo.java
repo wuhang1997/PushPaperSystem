@@ -24,6 +24,7 @@ public class PaperInfo implements Serializable {
 	private String website;
 	private Timestamp addTime;
 	private Integer click;
+	private Double score;
 	private String pdfFile;
 	private String suppPDFFile;
 

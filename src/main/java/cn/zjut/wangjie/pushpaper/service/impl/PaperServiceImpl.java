@@ -20,7 +20,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PaperServiceImpl implements PaperService {
@@ -79,7 +81,7 @@ public class PaperServiceImpl implements PaperService {
             return;
         }
 
-        List<PaperInfo> paperInfoList = paperInfoDao.getpushPaper(newPaperToPushList);
+        List<PaperInfo> paperInfoList = paperInfoDao.getPaperByPaperIds(newPaperToPushList);
         String emailContent = generatePushContent(paperInfoList);
         List<User> userList = userDao.getAllUser();
         pushToEmail(userList,newPaperPushTitle,emailContent);
@@ -166,4 +168,32 @@ public class PaperServiceImpl implements PaperService {
             }
 		}
 	}
+
+	@Override
+	public int addClick(Integer paperId) {
+		long time = (long)redisTemplate.opsForValue().get("rank"+paperId);
+		double score = (double)redisTemplate.opsForZSet().score("paperRank", paperId);
+		long nowTime = System.currentTimeMillis();
+		double newScore = 1+(score+0.0001)*Math.exp(-0.1*(Math.abs((nowTime-time)/1000)));
+		redisTemplate.opsForZSet().add("paperRank", paperId,newScore);
+		redisTemplate.opsForValue().set("rank"+paperId,nowTime);
+
+
+		return paperInfoDao.addClick(paperId);
+	}
+
+	@Override
+	public List<PaperInfo> getAllPaperScore() {
+		return paperInfoDao.getAllPaperScore();
+	}
+
+	@Override
+	public List<PaperInfo> getPaperByPaperIds(Collection paperIds) {
+		return paperInfoDao.getPaperByPaperIds(paperIds);
+	}
+
+    @Override
+    public int updatePaperScore(Integer paperId, Double score) {
+        return paperInfoDao.updatePaperScore(paperId,score);
+    }
 }

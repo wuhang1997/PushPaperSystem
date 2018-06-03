@@ -22,23 +22,8 @@
     <script src="${pageContext.request.contextPath }/bootstrap/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath }/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
     <script src="${pageContext.request.contextPath }/assets/scripts.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-    <script type="text/javascript"
-            src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-    <script type="text/javascript"
-            src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
-    <script>
-        $(function () {
-            // Easy pie charts
-            $('.chart').easyPieChart({animate: 1000});
-        });
-    </script>
+    <script src="${pageContext.request.contextPath }/echarts/echarts.min.js"></script>
+
 
 </head>
 
@@ -106,11 +91,12 @@
             series : [
                 {
                     type: 'graph',
-                    layout: 'force',
+                    layout: 'none',
                     // progressiveThreshold: 700,
                     data: json.nodes.map(function (node) {
                         return {
-
+                            x: node.x,
+                            y: node.y,
                             id: node.id,
                             name: node.label,
                             symbolSize: node.size,
@@ -128,10 +114,10 @@
                         };
                     }),
                     label: {
+
                         normal: {
                             position: 'right',
-                            show: true,
-                            formatter: '{b}'
+                            show: true
                         }
                     },
                     roam: true,
@@ -149,5 +135,11 @@
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }
+</script>
+<script>
+    $(function () {
+        // Easy pie charts
+        $('.chart').easyPieChart({animate: 1000});
+    });
 </script>
 </html>
