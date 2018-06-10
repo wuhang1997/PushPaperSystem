@@ -64,7 +64,7 @@ public class PaperRankTask {
         Set<ZSetOperations.TypedTuple<Integer>>  papersRank = redisTemplate.opsForZSet().reverseRangeWithScores("paperRank", 0, -1);
         for(ZSetOperations.TypedTuple<Integer> item:papersRank){
             oldTime = (long)redisTemplate.opsForValue().get("rank"+item.getValue());
-            newScore = (item.getScore()+0.0001)*Math.exp(-0.1*(Math.abs((nowTime-oldTime)/1000)));
+            newScore = (item.getScore()+0.0001)*Math.exp(-0.01*(Math.abs((nowTime-oldTime)/1000)));
             redisTemplate.opsForZSet().add("paperRank", item.getValue(),newScore);
             redisTemplate.opsForValue().set("rank"+item.getValue(),nowTime);
             paperService.updatePaperScore(item.getValue(),newScore);

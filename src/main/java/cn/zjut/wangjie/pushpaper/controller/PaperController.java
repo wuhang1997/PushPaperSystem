@@ -2,10 +2,7 @@ package cn.zjut.wangjie.pushpaper.controller;
 
 
 import cn.zjut.wangjie.pushpaper.pojo.*;
-import cn.zjut.wangjie.pushpaper.service.CollectionService;
-import cn.zjut.wangjie.pushpaper.service.CommentService;
-import cn.zjut.wangjie.pushpaper.service.PaperBrowseHistoryService;
-import cn.zjut.wangjie.pushpaper.service.PaperService;
+import cn.zjut.wangjie.pushpaper.service.*;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,8 @@ public class PaperController {
 	private RedisTemplate redisTemplate;
 	@Autowired
 	private PaperBrowseHistoryService paperBrowseHistoryService;
+	@Autowired
+    private NoteService noteService;
 	@Value("${page.pageSize}")
 	private int pageSize;
 	@Value("${paperPath}")
@@ -102,21 +101,27 @@ public class PaperController {
 		PaperInfo paperInfo = paperService.getPaperInfoById(paperId);
 		request.getSession().setAttribute("paper", paperInfo);
 		User user = (User)request.getSession().getAttribute("user");
-        Collection collection = new Collection();
-        collection.setPaperId(paperId);
-        collection.setUserId(user.getUid());
-		boolean isCollected = collectionService.isCollection(collection);
-		request.setAttribute("isCollected",isCollected);
-		PaperBrowseHistory paperBrowseHistory = new PaperBrowseHistory();
-		paperBrowseHistory.setAddAt(System.currentTimeMillis());
-		paperBrowseHistory.setUserId(user.getUid());
-		paperBrowseHistory.setPaperId(paperId);
-		paperBrowseHistoryService.add(paperBrowseHistory);
-		//获取评论
-		List<Comment> comments = commentService.listCommentByPaperId(paperId);
-		request.setAttribute("commentList",comments);
-		//点击量加一
+		if (user != null) {
+            Collection collection = new Collection();
+            collection.setPaperId(paperId);
+            collection.setUserId(user.getUid());
+            boolean isCollected = collectionService.isCollection(collection);
+            request.setAttribute("isCollected", isCollected);
+            PaperBrowseHistory paperBrowseHistory = new PaperBrowseHistory();
+            paperBrowseHistory.setAddAt(System.currentTimeMillis());
+            paperBrowseHistory.setUserId(user.getUid());
+            paperBrowseHistory.setPaperId(paperId);
+            paperBrowseHistoryService.add(paperBrowseHistory);
+            //获取评论
+            List<Comment> comments = commentService.listCommentByPaperId(paperId);
+            request.setAttribute("commentList", comments);
+            //获取笔记
+            List<Note> noteList = noteService.listNoteByPaperIdAndUserId(paperId, user.getUid());
+            request.setAttribute("noteList", noteList);
+        }
+        //点击量加一
 		paperService.addClick(paperId);
+
 		return "paperInfoShow";
 	}
 	@RequestMapping(value = "/{file}/download.action")

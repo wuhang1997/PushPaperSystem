@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>论文详情</title>
+    <title>笔记详情</title>
     <link
             href="${pageContext.request.contextPath }/style/news.css"
             rel="stylesheet" media="screen">
@@ -92,15 +92,15 @@
                         <fieldset>
                             <div class="block-content collapse in">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#comment" data-toggle="tab"
+                                    <li class=""><a href="#comment" data-toggle="tab"
                                                           aria-expanded="true">评论</a>
                                     </li>
-                                    <li class=""><a href="#note" data-toggle="tab"
+                                    <li class="active"><a href="#note" data-toggle="tab"
                                                     aria-expanded="false">笔记</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane fade active in" id="comment">
+                                    <div class="tab-pane fade " id="comment">
                                         <div class="control-group">
                                             <div class="controls">
                                                 <div class="data_list comment_list">
@@ -132,29 +132,24 @@
                                                             <textarea style="width: 98%" rows="3" id="content"
                                                                       name="content"></textarea>
                                                         </div>
-
                                                         <div class="publishButton">
-
-                                                            <input type="submit" class="btn btn-primary" value="发表评论" />&nbsp;&nbsp;
-                                                            <input type="button" class="btn btn-primary" value="返回"
-                                                                   onclick="javascript:history.back()" />&nbsp;&nbsp;<font
-                                                                id="error" color="red">${error }</font>
+                                                            <button class="btn btn-primary" type="submit">发表评论</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="note">
+                                    <div class="tab-pane fade active in" id="note">
 
 
                                         <fieldset>
-                                            <form action="${pageContext.request.contextPath}/note/add" method="post">
+                                            <form action="${pageContext.request.contextPath}/note/update" method="post" enctype="multipart/form-data">
                                                 <table cellpadding="5" width="100%">
                                                     <div class="control-group">
                                                         <label class="control-label">标题 </label>
                                                         <div class="controls">
-                                                            <input type="text" class="span3" name="article">
+                                                            <input type="text" class="span3" name="article" value="${noteShowing.article}">
 
                                                         </div>
                                                     </div>
@@ -162,12 +157,9 @@
                                                     <div class="control-group">
                                                         <label class="control-label">内容 </label>
                                                         <div class="controls">
-                                                            <textarea class="input-xlarge textarea" name="content"
-                                                                      placeholder="Enter text ..."
-                                                                      style="width: 810px; height: 200px"></textarea>
+                                                            <textarea class="input-xlarge textarea" name="content" style="width: 810px; height: 200px"> ${noteShowing.content}</textarea>
                                                         </div>
                                                     </div>
-
                                                     <c:if test="${!empty user }">
 
                                                         <input type="hidden" name="paperId" value="${paper.paperId }"/>
@@ -177,8 +169,10 @@
 
                                                     </c:if>
                                                     <div class="form-actions">
-                                                        <button type="submit" class="btn btn-primary">保存</button>
-                                                        <button type="reset" class="btn">重置</button>
+                                                        <input type="submit" class="btn btn-primary" value="更新" />&nbsp;&nbsp;
+                                                        <input type="button" class="btn btn-primary" value="返回"
+                                                               onclick="javascript:history.back()" />&nbsp;&nbsp;<font
+                                                            id="error" color="red">${error }</font>
                                                     </div>
                                                 </table>
                                             </form>
@@ -193,12 +187,12 @@
             </div>
         </div>
 
-        <div class="span3" id="sidebar" >
+        <div class="span3">
             <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                 <li style="text-align:center">笔记</li>
                 <c:forEach var="note" items="${noteList }">
                     <li style="text-align:center">
-                        <a href="${pageContext.request.contextPath }/note/${note.id}/show" style="align-content: center"><p>${fn:substring(note.article,0,40) }...</a>
+                        <a href="#" style="align-content: center"><p>${fn:substring(note.article,0,40) }...</a>
                     </li>
                 </c:forEach>
 
@@ -214,8 +208,7 @@
 <link href="${pageContext.request.contextPath }/vendors/uniform.default.css" rel="stylesheet" media="screen">
 <link href="${pageContext.request.contextPath }/vendors/chosen.min.css" rel="stylesheet" media="screen">
 
-<link href="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet"
-      media="screen">
+<link href="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
 
 <script src="${pageContext.request.contextPath }/vendors/jquery-1.9.1.js"></script>
 <script src="${pageContext.request.contextPath }/bootstrap/js/bootstrap.min.js"></script>
@@ -228,33 +221,31 @@
 
 <script src="${pageContext.request.contextPath }/vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
 
-<script type="text/javascript"
-        src="${pageContext.request.contextPath }/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/form-validation.js"></script>
 
 <script src="${pageContext.request.contextPath }/assets/scripts.js"></script>
 
 <script>
 
-   /* jQuery(document).ready(function () {
+    jQuery(document).ready(function() {
         FormValidation.init();
-    });*/
+    });
 
 
-    $(function () {
+    $(function() {
         $(".datepicker").datepicker();
         $(".uniform_on").uniform();
         $(".chzn-select").chosen();
         $('.textarea').wysihtml5();
 
-        $('#rootwizard').bootstrapWizard({
-            onTabShow: function (tab, navigation, index) {
+        $('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
                 var $total = navigation.find('li').length;
-                var $current = index + 1;
-                var $percent = ($current / $total) * 100;
-                $('#rootwizard').find('.bar').css({width: $percent + '%'});
+                var $current = index+1;
+                var $percent = ($current/$total) * 100;
+                $('#rootwizard').find('.bar').css({width:$percent+'%'});
                 // If it's the last tab then hide the last button and show the finish instead
-                if ($current >= $total) {
+                if($current >= $total) {
                     $('#rootwizard').find('.pager .next').hide();
                     $('#rootwizard').find('.pager .finish').show();
                     $('#rootwizard').find('.pager .finish').removeClass('disabled');
@@ -262,9 +253,8 @@
                     $('#rootwizard').find('.pager .next').show();
                     $('#rootwizard').find('.pager .finish').hide();
                 }
-            }
-        });
-        $('#rootwizard .finish').click(function () {
+            }});
+        $('#rootwizard .finish').click(function() {
             alert('Finished!, Starting over!');
             $('#rootwizard').find("a[href*='tab1']").trigger('click');
         });

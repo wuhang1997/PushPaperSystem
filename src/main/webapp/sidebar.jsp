@@ -24,6 +24,9 @@
         <li><a href="${pageContext.request.contextPath }/paper-browse-history/show?currentPage=1"><i
                 class="icon-chevron-right"></i>
             浏览历史</a></li>
+        <li><a href="${pageContext.request.contextPath }/note/listShow?currentPage=1"><i
+                class="icon-chevron-right"></i>
+            我的笔记</a></li>
         <li><a href="${pageContext.request.contextPath }/paper-collection/show?currentPage=1"><i
                 class="icon-chevron-right"></i>
             我的收藏</a></li>

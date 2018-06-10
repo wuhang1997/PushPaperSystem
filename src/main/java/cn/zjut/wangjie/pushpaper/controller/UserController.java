@@ -6,7 +6,9 @@ import cn.zjut.wangjie.pushpaper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +35,17 @@ public class UserController {
 	}
 	@RequestMapping("register.action")
 	public String register(User user) {
+
+		boolean result = userService.isEmalExist(user.getEmail());
+		if (result){
+			request.setAttribute("msg" , "邮箱已被注册");
+			return "register";
+		}
 		if(userService.register(user)) {
 			request.getSession().setAttribute("user", user);
 			return "main";
 		}else{
-			return "regist";
+			return "register";
 		}
 	}
 	
@@ -53,6 +61,16 @@ public class UserController {
 	public String logout(){
 		request.getSession().setAttribute("user",null);
 		return "login";
+	}
+	@PostMapping("/checkEmail")
+	@ResponseBody
+	public String checkEmail(String email){
+		boolean result = userService.isEmalExist(email);
+/*		if (result){
+			return "success";
+		}
+		return "fail"*/
+		return result? "success":"fail";
 	}
 	
 }

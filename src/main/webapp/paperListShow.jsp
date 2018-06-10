@@ -48,7 +48,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <jsp:include page="sidebar.jsp"></jsp:include>
-        <div class="span9" id="content">
+        <div class="span6" id="content">
             <div class="row-fluid">
                 <form action="${pageContext.request.contextPath }/paperController/search-keywords" method="post">
                     <tr>
@@ -122,21 +122,6 @@
             </c:forEach>
 
 
-            <div class="span3">
-
-
-                <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                    <li>热点论文</li>
-                    <c:forEach var="hotPaper" items="${top10Paper }">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/paperController/showPaperInfo?id=${hotPaper.paperId}"><p>${fn:substring(hotPaper.article,0,40) }...</a>
-                        </li>
-                    </c:forEach>
-
-                </ul>
-
-
-            </div>
 
 
             <div class="pagination pagination-centered">
@@ -171,6 +156,21 @@
 
                 </ul>
             </div>
+        </div>
+        <div class="span3">
+
+
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li style="text-align:center">热点论文</li>
+                <c:forEach var="hotPaper" items="${top10Paper }">
+                    <li style="text-align:center">
+                        <a href="${pageContext.request.contextPath}/paperController/showPaperInfo?id=${hotPaper.paperId}" style="align-content: center"><p >${fn:substring(hotPaper.article,0,40) }...</a>
+                    </li>
+                </c:forEach>
+
+            </ul>
+
+
         </div>
 
 

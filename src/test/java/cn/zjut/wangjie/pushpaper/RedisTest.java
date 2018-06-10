@@ -1,7 +1,5 @@
 package cn.zjut.wangjie.pushpaper;
 
-import cn.zjut.wangjie.pushpaper.process.entity.Node;
-import cn.zjut.wangjie.pushpaper.process.entity.Word;
 import cn.zjut.wangjie.pushpaper.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

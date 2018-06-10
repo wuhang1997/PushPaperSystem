@@ -8,6 +8,7 @@ import cn.zjut.wangjie.pushpaper.util.MD5Util;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,15 +36,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
 	public boolean isEmalExist(String email) {
-		User user = new User();
-		user.setEmail(email);
-		user = userDao.findUser(user);
-		return user==null?false:true;
+
+		if (userDao.isEmailExit(email)>0){
+			return true;
+		}
+		return false;
+
 	
 	}
 
-
-
-	
 
 }

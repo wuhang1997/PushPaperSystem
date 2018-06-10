@@ -30,8 +30,9 @@
                     action="${pageContext.request.contextPath }/userController/login.action"
                     method="post">
                 <div class="group">
+
                     <div class="group-ipt email">
-                        <input type="text" name="email" id="email" class="ipt"
+                        <input type="email" name="email" id="email" class="ipt"
                                placeholder="邮箱地址" required>
                     </div>
                     <div class="group-ipt password">

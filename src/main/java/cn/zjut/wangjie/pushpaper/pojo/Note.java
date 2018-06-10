@@ -13,6 +13,10 @@ public class Note {
     private Integer id;
     private Integer paperId;
     private Integer userId;
+    private String  paperArticle;
+    private String  authors;
+    private String  website;
+    private String article;
     private String content;
     private Long addAt;
     private Long updateAt;

@@ -48,7 +48,6 @@ public class CollectionController {
     public String deleteCollection(Integer paperId){
         User user = (User)request.getSession().getAttribute("user");
         Collection collection = new Collection();
-        collection.setAddAt(System.currentTimeMillis());
         collection.setPaperId(paperId);
         collection.setUserId(user.getUid());
         int result =collectionService.deleteCollection(collection);

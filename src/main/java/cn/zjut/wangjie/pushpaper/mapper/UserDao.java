@@ -17,6 +17,8 @@ public interface UserDao {
 	@SelectProvider(type = UserSQLFactory.class , method = "findUserSQL")
 	User findUser(User user);
 
+	@Select("select count(*) from user where email = #{email}")
+	int isEmailExit(String email);
 	@Select("select * from user ")
 	List<User> getAllUser();
 
