@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -29,6 +30,8 @@ public class WordsProcessTest {
 
     @Autowired
     private PaperService paperService;
+    @Value("${paperPath}")
+    private String path;
     @Test
     public void stopWordsTest(){
         System.out.println(WordsProcess.StopWords().toString());
@@ -42,14 +45,14 @@ public class WordsProcessTest {
         for (PaperInfo paperInfo : paperInfoList){
             texts.add(paperInfo.getArticle() + " " +paperInfo.getArticle());
         }
-        WordsProcess.writeWordsDependency(texts);
+        WordsProcess.writeWordsDependency(texts,path);
     }
     @Test
     public void writeArticleToTextFileTest(){
 
 
         List<String >articles = paperService.getAllPaperArticle();
-        WordsProcess.writeWordsDependency(articles);
+        WordsProcess.writeWordsDependency(articles,path);
     }
     @Test
     public  void paperRankTest(){

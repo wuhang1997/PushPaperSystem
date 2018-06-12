@@ -4,6 +4,7 @@ import cn.zjut.wangjie.pushpaper.process.WordsProcess;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,11 @@ public class PaperAnalysisTask {
 
     @Autowired
     private PaperService paperService;
-    @Scheduled(cron = "0 29 9 * * ?")
+    @Value("${paperPath}")
+    private String path;
+    @Scheduled(cron = "0 0 5 * * ?")
     public void paperArticleAnalysisTask(){
         List<String> paperArticleList = paperService.getAllPaperArticle();
-        WordsProcess.writeWordsDependency(paperArticleList);
+        WordsProcess.writeWordsDependency(paperArticleList,path);
     }
 }

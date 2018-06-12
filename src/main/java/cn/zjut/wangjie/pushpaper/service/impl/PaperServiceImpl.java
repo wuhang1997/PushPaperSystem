@@ -48,8 +48,6 @@ public class PaperServiceImpl implements PaperService {
 	@Override
 	public List<PaperInfo> getPaperList(PageDTO pageDTO) {
 
-		/*Page page = PageHelper.startPage(pageDTO.getCurrentPage(),pageDTO.getPageSize());
-		List<PaperInfo> paperInfoList = paperInfoDao.*/
 		return paperInfoDao.getPaperList(pageDTO);
 	}
 
@@ -59,14 +57,19 @@ public class PaperServiceImpl implements PaperService {
 	}
 
 	@Override
-	public int countPaperByWebsite(String website) {
+	public int countPaper(PageDTO pageDTO) {
 		
-		return paperInfoDao.countPaperByWebsite(website);
+		return paperInfoDao.countPaper(pageDTO);
 	}
 
 	@Override
 	public PaperInfo getPaperInfoById(Integer id) {
 		return paperInfoDao.getPaperInfoById(id);
+	}
+
+	@Override
+	public PaperInfo getpaperInfoByPaperUrl(String paperUrl) {
+		return paperInfoDao.getPaperInfoByPaperUrl(paperUrl);
 	}
 
 	@Override
@@ -196,4 +199,20 @@ public class PaperServiceImpl implements PaperService {
     public int updatePaperScore(Integer paperId, Double score) {
         return paperInfoDao.updatePaperScore(paperId,score);
     }
+
+	@Override
+	public List<PaperInfo> listUnCompletePaper() {
+
+		return paperInfoDao.listUnCompletePaper();
+	}
+
+	@Override
+	public boolean isPaperExist(String paperUrl) {
+		return paperInfoDao.isPaperExist(paperUrl);
+	}
+
+	@Override
+	public int updatePaperInfo(PaperInfo paperInfo) {
+		return paperInfoDao.updatePaperInfo(paperInfo);
+	}
 }

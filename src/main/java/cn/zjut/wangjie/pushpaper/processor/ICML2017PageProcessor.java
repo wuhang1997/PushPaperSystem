@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class ICMLPageProcessor implements PageProcessor{
+public class ICML2017PageProcessor implements PageProcessor{
 
 
     @Autowired
@@ -68,7 +68,6 @@ public class ICMLPageProcessor implements PageProcessor{
                     paperInfo.setPdfFile(DownloadFileUtil.getFileNameFromUrl(pdfUrls.get(0)));
                    // DownloadFileUtil.download(pdfUrls.get(0), filePath);
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     log.debug("下载PDF{}出错"+paperInfo.getPdfUrl());
 
@@ -79,7 +78,6 @@ public class ICMLPageProcessor implements PageProcessor{
                         paperInfo.setSuppPDFFile(DownloadFileUtil.getFileNameFromUrl(pdfUrls.get(1)));
                        // DownloadFileUtil.download(pdfUrls.get(1), filePath);
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                         log.debug("下载supp_pdf{}出错"+paperInfo.getSuppPDFUrl());
                     }
@@ -96,8 +94,6 @@ public class ICMLPageProcessor implements PageProcessor{
             redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
            // log.info("\npaper："+paperInfo.toString());
            // elPaperService.savePaperInfo(paperInfo);
-
-
 
         }
 

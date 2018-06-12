@@ -44,7 +44,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <jsp:include page="sidebar.jsp"></jsp:include>
-        <div class="span9" id="content">
+        <div class="span9" id="content" style="padding-top: 100px">
 
             <div class="data_content">
                 <table class="table table-hover table-bordered">

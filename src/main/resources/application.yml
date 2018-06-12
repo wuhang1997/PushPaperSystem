@@ -94,7 +94,7 @@ page:
 md5:
   salt: 123456
 
-paperPath: D:\\resource\\paper\\
+paperPath: D:/resource/paper/
 
 
 #pagehelper分页插件

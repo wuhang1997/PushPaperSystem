@@ -11,9 +11,12 @@ import java.util.List;
 
 public interface PaperService {
 	List<PaperInfo> getPaperList(PageDTO pageDto);
+
 	List<String> getAllPaperArticle();
-	int countPaperByWebsite(String website);
+	int countPaper(PageDTO pageDTO);
 	PaperInfo getPaperInfoById(Integer id);
+
+	PaperInfo getpaperInfoByPaperUrl(String paperUrl);
 
 	List<PaperInfo> getAllPaper();
 	void pushRecommendPaper();
@@ -25,4 +28,11 @@ public interface PaperService {
 
 	List<PaperInfo> getPaperByPaperIds(Collection paperIds);
 	int updatePaperScore(Integer paperId , Double score);
+
+	List<PaperInfo> listUnCompletePaper();
+
+	boolean isPaperExist(String paperUrl);
+	int updatePaperInfo(PaperInfo paperInfo);
+
+
 }

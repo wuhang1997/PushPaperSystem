@@ -22,4 +22,6 @@ public interface UserDao {
 	@Select("select * from user ")
 	List<User> getAllUser();
 
+	@Update("update user set name = #{name} ,email =#{email} , preferences = #{preferences} where uid = #{uid}")
+	int updateUser(User user);
 }

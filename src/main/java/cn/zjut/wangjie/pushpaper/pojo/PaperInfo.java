@@ -18,14 +18,24 @@ public class PaperInfo implements Serializable {
 	private String article;
 	private String authors;
 	private String paperAbstract;
-	private boolean hasPDF; 
+	private Boolean hasPDF;
 	private String pdfUrl;
 	private String suppPDFUrl;
 	private String website;
-	private Timestamp addTime;
+	private Long addTime;
 	private Integer click;
 	private Double score;
 	private String pdfFile;
 	private String suppPDFFile;
+	private Integer year;
+	private Integer complete;
+
+	public void checkComplete(){
+		if (article!= null && authors != null && paperAbstract!=null && pdfUrl!=null){
+			complete = 1;
+		}else {
+			complete = 0;
+		}
+	}
 
 }

@@ -45,15 +45,16 @@ public class PaperController {
 	@Value("${paperPath}")
 	private String paperPath;
 	
-	@RequestMapping("/{website}/paperShow.action")
-	public String paperList(@PathVariable(value = "website") String website) {
+	@RequestMapping("/{website}/{year}/paperShow.action")
+	public String paperList(@PathVariable(value = "website") String website,@PathVariable(value = "year") Integer year) {
 
 		PageDTO pageDTO = new PageDTO();
 		pageDTO.setBegin(0);
 		pageDTO.setContentFlag(website);
+		pageDTO.setYear(year);
 		pageDTO.setCurrentPage(1);
 		pageDTO.setPageSize(pageSize);
-		int total =paperService.countPaperByWebsite(website);
+		int total =paperService.countPaper(pageDTO);
 		pageDTO.calculatTotalPage(total);
 		pageDTO.setContentList(paperService.getPaperList(pageDTO));
 		request.getSession().setAttribute("pageDTO", pageDTO);

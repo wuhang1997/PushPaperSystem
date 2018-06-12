@@ -3,6 +3,7 @@ package cn.zjut.wangjie.pushpaper.controller;
 
 import cn.zjut.wangjie.pushpaper.pojo.User;
 import cn.zjut.wangjie.pushpaper.service.UserService;
+import cn.zjut.wangjie.pushpaper.util.RegxUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,10 @@ public class UserController {
 	@RequestMapping("register.action")
 	public String register(User user) {
 
+		if (!RegxUtils.isEmail(user.getEmail())){
+			request.setAttribute("msg" , "邮箱格式错误");
+			return "register";
+		}
 		boolean result = userService.isEmalExist(user.getEmail());
 		if (result){
 			request.setAttribute("msg" , "邮箱已被注册");
@@ -72,5 +77,26 @@ public class UserController {
 		return "fail"*/
 		return result? "success":"fail";
 	}
+
+	@PostMapping("/update")
+	public String updateUser(User user){
+		if (!RegxUtils.isEmail(user.getEmail())){
+			request.setAttribute("msg" , "邮箱格式错误");
+			return "userCenter";
+		}
+		User oldUser = (User)request.getSession().getAttribute("user");
+		if (!user.getEmail().equals(oldUser.getEmail())){
+			boolean result = userService.isEmalExist(user.getEmail());
+			if (result){
+				request.setAttribute("msg" , "邮箱已被注册");
+				return "userCenter";
+			}
+		}
+		userService.updateUser(user);
+		request.setAttribute("msg" , "修改成功");
+		request.getSession().setAttribute("user",user);
+		return "userCenter";
+	}
+
 	
 }

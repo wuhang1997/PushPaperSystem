@@ -1,6 +1,7 @@
 package cn.zjut.wangjie.pushpaper.listener;
 
 import cn.zjut.wangjie.pushpaper.constant.PaperType;
+import cn.zjut.wangjie.pushpaper.pojo.PageDTO;
 import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,25 @@ public class InitPlatformListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-        int icmlNum = paperService.countPaperByWebsite(PaperType.ICML);
-        servletContextEvent.getServletContext().setAttribute("ICMLNum", icmlNum);
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setYear(2017);
+        pageDTO.setContentFlag(PaperType.ICML);
+        int icml2017Num = paperService.countPaper(pageDTO);
+        servletContextEvent.getServletContext().setAttribute("ICML2017Num", icml2017Num);
+
+        pageDTO.setContentFlag(PaperType.KDD);
+        int kdd2017Num = paperService.countPaper(pageDTO);
+        servletContextEvent.getServletContext().setAttribute("KDD2017Num", kdd2017Num);
+
+        pageDTO.setYear(2016);
+        int kdd2016Num = paperService.countPaper(pageDTO);
+        servletContextEvent.getServletContext().setAttribute("KDD2016Num", kdd2016Num);
+
+        pageDTO.setContentFlag(PaperType.ICML);
+        int icml2016Num = paperService.countPaper(pageDTO);
+        servletContextEvent.getServletContext().setAttribute("ICML2016Num", icml2016Num);
+
 
         List<PaperInfo> paperScoreList = paperService.getAllPaperScore();
         long time = System.currentTimeMillis();

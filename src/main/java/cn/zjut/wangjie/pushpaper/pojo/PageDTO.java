@@ -15,6 +15,7 @@ public class PageDTO {
 	private Integer totalPage;
 	private String contentFlag;
 	private String search;
+	private Integer year;
 	
 	public void calculatTotalPage(int totalPaper) {
 		totalPage = totalPaper/pageSize;

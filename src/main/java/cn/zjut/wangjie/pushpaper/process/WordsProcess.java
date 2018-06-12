@@ -19,12 +19,9 @@ import java.util.*;
 public class WordsProcess {
 
 
-    public static String getWordsDependency(){
+    public static String getWordsDependency(String file){
         String wordsDependencyJson = new String();
-        Resource resource = new ClassPathResource("wordsDependency.json");
-
         try {
-            File file = resource.getFile();
             BufferedReader bf = new BufferedReader(new FileReader(file));
             wordsDependencyJson = bf.readLine();
             bf.close();
@@ -38,7 +35,7 @@ public class WordsProcess {
 
         return wordsDependencyJson;
     }
-    public static void writeWordsDependency(List<String>texts){
+    public static void writeWordsDependency(List<String>texts , String filePath){
 
         //每篇文档单词词频
         List<Map<String,Integer>> docs = new ArrayList<>(500);
@@ -113,14 +110,15 @@ public class WordsProcess {
               wordsInDocsTFIDF.add(wordInOneDocTFIDF);
             }
 
-            for(Map m : wordsInDocsTFIDF){
+           /* for(Map m : wordsInDocsTFIDF){
                 System.out.println(m.toString());
-            }
+            }*/
 
 
         List<Node> nodes = new ArrayList<>(1000);
         List<Edge> edges = new ArrayList<>(5000);
         Random random = new Random();
+        Map<String ,Double> wordTFIDF = new HashMap<>(1000);
         for(String word: allWords){
 
             double totalTFIDF = 0;
@@ -145,27 +143,53 @@ public class WordsProcess {
 
                 i++;
             }
-            if (totalTFIDF>2) {
+
+
+            if (totalTFIDF>6) {
                 Node node = new Node();
                 node.setId(word);
                 node.setLabel(word);
-                node.setSize(totalTFIDF * 5);
-                node.setX(random.nextDouble()*40000);
-                node.setY(random.nextDouble()*40000);
+                node.setSize(totalTFIDF * 3);
+                node.setX(random.nextDouble()*4000);
+                node.setY(random.nextDouble()*4000);
 
                 edges.addAll(edgesForOneWord);
                 nodes.add(node);
             }
 
+            wordTFIDF.put(word,totalTFIDF);
+
 
         }
 
+        writeToTextFile(JSON.toJSONString(wordTFIDF),filePath+"wordTotalPDFIDF.json");
+            List<Map.Entry<String,Double>> list = new ArrayList<Map.Entry<String,Double>>(wordTFIDF.entrySet());
+            Collections.sort(list,new Comparator<Map.Entry<String,Double>>() {
+                @Override
+                //降序
+                public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
 
+
+            });
+
+        Map<String,Double> wordTotalDFIDFDesc = new HashMap<>(1000);
+        int i = 0;
+        for(Map.Entry<String,Double> mapping:list){
+
+            wordTotalDFIDFDesc.put(mapping.getKey(),mapping.getValue());
+            i++;
+            if (i==100){
+                break;
+            }
+        }
+        writeToTextFile(JSON.toJSONString(wordTotalDFIDFDesc),filePath+"wordTotalDFIDFTop100.json");
         Map<String , Object> map = new HashMap<>(2);
         map.put("nodes",nodes);
         map.put("edges",edges);
 
-        writeToTextFile(JSON.toJSONString(map));
+        writeToTextFile(JSON.toJSONString(map),filePath+"wordsDependency.json");
 
     }
     public static Set<String> StopWords() {
@@ -190,21 +214,9 @@ public class WordsProcess {
 
         return stopWords;
     }
-    public static void writeToTextFile(String content) {
+    public static void writeToTextFile(String content ,String file) {
 
         try {
-
-            Resource resource = new ClassPathResource("wordsDependency.json");
-
-
-            File file = resource.getFile();
-
-
-            if (!file.exists()) {
-
-                file.createNewFile();
-
-            }
 
 
 

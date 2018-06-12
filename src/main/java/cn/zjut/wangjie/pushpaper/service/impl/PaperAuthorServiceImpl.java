@@ -27,15 +27,18 @@ public class PaperAuthorServiceImpl implements PaperAuthorService {
 
 
         String authorsStr = paperInfo.getAuthors();
+        System.out.println(authorsStr);
+        authorsStr = authorsStr.replaceAll(",", ";");
         authorsStr.trim();
-        authorsStr = authorsStr.replace(" ; ", ",");
+        System.out.println(authorsStr);
+        String[] authors = authorsStr.split(";");
 
-        String[] authors = authorsStr.split(",");
         for(int i = 0 ; i< authors.length ; i++){
             Author author = authorDao.getAuthorByName(authors[i].trim());
             if (author == null){
                 author = new Author();
                 author.setName(authors[i].trim());
+
                 authorDao.addAuthor(author);
             }
             PaperAuthor paperAuthor = paperAuthorDao.getPaperAuthorByAuthorIdAndPaperId(author.getAuthorId(),paperInfo.getPaperId());

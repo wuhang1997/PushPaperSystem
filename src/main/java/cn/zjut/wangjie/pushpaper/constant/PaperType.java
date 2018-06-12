@@ -8,4 +8,5 @@ package cn.zjut.wangjie.pushpaper.constant;
  **/
 public class PaperType {
     public static final String ICML = "ICML";
+    public static final String KDD ="KDD";
 }

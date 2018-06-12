@@ -19,6 +19,7 @@ public class UserSQLFactory {
                 VALUES("name","#{name}");
                 VALUES("email","#{email}");
                 VALUES("password","#{password}");
+                VALUES("preferences","#{preferences}");
             }
         };
         log.info("\nsql----------------------\n"+sql.toString());

@@ -59,13 +59,20 @@ public class ElasticSearchTest {
        // System.out.println("paperInfo:"+paperInfoList.toString());
        // log.info("\npaperInfoList.size:"+paperInfoList.size());
         //log.info("\npaperInfo:"+paperInfoList.toString());
-        List<PaperInfo> paperInfoList = paperInfoDao.getAllPaper();
+       /* List<PaperInfo> paperInfoList = paperInfoDao.getAllPaper();
         for (PaperInfo p :paperInfoList
                 ) {
             elPaperInfoRepository.save(p);
-        }
+        }*/
+       PaperInfo paperInfo = paperService.getPaperInfoById(30);
+       elPaperInfoRepository.save(paperInfo);
 
     }
+    @Test
+    public void deleteAllPaper(){
+        elPaperInfoRepository.deleteAll();
+    }
+
     @Test
     public void getAllPaperInfo(){
 

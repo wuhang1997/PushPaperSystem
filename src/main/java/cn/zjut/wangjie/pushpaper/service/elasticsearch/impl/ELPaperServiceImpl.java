@@ -51,14 +51,9 @@ public class ELPaperServiceImpl implements ELPaperService {
 
     @Override
     public void savePaperInfo(PaperInfo paperInfo) {
-        Index index = new Index.Builder(paperInfo).id(paperInfo.getArticle()).index(INDEX_NAME).type(TYPE).build();
-        try{
-            jestClient.execute(index);
-        }catch (IOException e){
-            e.printStackTrace();
-            log.info("向elasticsearch插入数据出错，插入对象为paperInfo："+paperInfo.toString());
-        }
+        elPaperInfoRepository.save(paperInfo);
     }
+
 
     @Override
     public List<PaperInfo> searchPaperInfo(String searchStr) {

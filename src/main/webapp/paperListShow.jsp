@@ -93,21 +93,27 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="abstract${paperInfo.paperId  }">
 
-                                    <p>${paperInfo.paperAbstract }</p>
+                                    <p>${fn:substring(paperInfo.paperAbstract,0,500) }<strong>...</strong></p>
 
                                 </div>
                                 <div class="tab-pane fade" id="info${paperInfo.paperId  }">
                                     <h5>作者</h5>
                                     <p>${paperInfo.authors }</p>
                                     <p>来源：${paperInfo.website }</p>
-                                    <c:if test="${paperInfo.pdfFile != null }">
-                                        <p>
+                                    <c:if test="${paperInfo.hasPDF != null }">
+                                        <%--<p>
                                             -<a href="${pageContext.request.contextPath }/paperController/${paperInfo.pdfFile }/download.action">Download
+                                            PDF</a></p>--%>
+                                        <p>
+                                            -<a href="${paperInfo.pdfUrl}">Download
                                             PDF</a></p>
                                     </c:if>
-                                    <c:if test="${paperInfo.suppPDFFile != null }">
-                                        <p>
+                                    <c:if test="${paperInfo.suppPDFUrl != null }">
+                                       <%-- <p>
                                             -<a href="${pageContext.request.contextPath }/paperController/${paperInfo.suppPDFFile }/download.action">Supplementary
+                                            PDF</a></p>--%>
+                                        <p>
+                                            -<a href="${paperInfo.suppPDFUrl }">Supplementary
                                             PDF</a></p>
                                     </c:if>
 
@@ -157,14 +163,14 @@
                 </ul>
             </div>
         </div>
-        <div class="span3">
+      <div class="span3">
 
 
             <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                 <li style="text-align:center">热点论文</li>
                 <c:forEach var="hotPaper" items="${top10Paper }">
                     <li style="text-align:center">
-                        <a href="${pageContext.request.contextPath}/paperController/showPaperInfo?id=${hotPaper.paperId}" style="align-content: center"><p >${fn:substring(hotPaper.article,0,40) }...</a>
+                        <a href="${pageContext.request.contextPath}/paperController/showPaperInfo?id=${hotPaper.paperId}" style="align-content: center"><p ><strong>${fn:substring(hotPaper.article,0,40) }...</strong></a>
                     </li>
                 </c:forEach>
 
