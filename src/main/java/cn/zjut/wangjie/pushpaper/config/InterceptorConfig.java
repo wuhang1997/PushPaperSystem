@@ -27,9 +27,11 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/comment/add")
-                .addPathPatterns("/paper-browse-history")
-                .addPathPatterns("/paper-collection");
+                .addPathPatterns("/comment/*")
+                .addPathPatterns("/paper-browse-history/*")
+               .addPathPatterns("/note/*")
+               .addPathPatterns("/recommend/*")
+                .addPathPatterns("/paper-collection/*");
 
         super.addInterceptors(registry);
     }

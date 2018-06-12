@@ -40,7 +40,7 @@ public class NewPaperCheckTask {
     private PaperService paperService;
     @Value("${paperPath}")
     private String path;
-    @Scheduled(cron = "0 0 8 * * ?")
+    @Scheduled(cron = "0 27 10 * * ?")
     public void NewPaperCheck(){
 
         //ICML2017

@@ -37,10 +37,10 @@ public interface PaperInfoDao {
 	List<PaperInfo> getAllPaper();
 
     @Select("<script>" +
-                "select * from paperinfo where paper_id in" +
-                    "<foreach item='id' index ='index' collection='paperIds' open='(' separator=',' close=')'>" +
-                        "#{id}" +
-                    "</foreach>" +
+                "select * from paperinfo where paper_id in " +
+                    " <foreach item='id' index ='index' collection='paperIds' open='(' separator=',' close=')'> " +
+                        "#{id} " +
+                    " </foreach> " +
             "</script>")
     List<PaperInfo> getPaperByPaperIds(@Param("paperIds") Collection<Integer> paperIdList);
 

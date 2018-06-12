@@ -25,7 +25,12 @@ public class PaperPushTest {
 
     @Test
     public void testPushNewPaper() {
+
         paperService.pushNewPaperToAllUser();
+    }
+    @Test
+    public void testRecommendPaper(){
+        paperService.pushRecommendPaper();
     }
 
 

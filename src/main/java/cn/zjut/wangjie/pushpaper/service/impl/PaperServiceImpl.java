@@ -14,17 +14,20 @@ import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import cn.zjut.wangjie.pushpaper.util.SendEmailUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class PaperServiceImpl implements PaperService {
     @Autowired
 	private PaperInfoDao paperInfoDao;
@@ -80,9 +83,12 @@ public class PaperServiceImpl implements PaperService {
 	@Override
 	public void pushNewPaperToAllUser() {
         List<Integer> newPaperToPushList = redisTemplate.opsForList().range("newPaperToPush",0,-1);
-        if (newPaperToPushList == null){
+        if (newPaperToPushList == null || newPaperToPushList.size() == 0){
+			log.info("无新论文推送");
             return;
         }
+		System.out.println("-------------------");
+		System.out.println(newPaperToPushList.toString());
 
         List<PaperInfo> paperInfoList = paperInfoDao.getPaperByPaperIds(newPaperToPushList);
         String emailContent = generatePushContent(paperInfoList);
@@ -157,10 +163,15 @@ public class PaperServiceImpl implements PaperService {
 		for (User user:userList
 			 ) {
 			List<String> searchContentList = redisTemplate.opsForList().range("search_record_"+user.getUid(),0,20);
+			searchContentList.add(user.getPreferences());
 			List<Integer> collectionPaperIds = collectionDao.getCollectionIdsByUid(user.getUid());
+			if (searchContentList.size()<1 && collectionPaperIds.size()<1){
+				return ;
+			}
             List<Integer> recommendPaperIds = recommendDao.getRecommendedPaperIdsByUid(user.getUid());
+
             List<PaperInfo> recommendPaperList = elPaperService.recommend(searchContentList,collectionPaperIds,recommendPaperIds);
-            if (recommendPaperList!=null){
+            if (recommendPaperList!=null && recommendPaperList.size()>0){
                 String recommendContent = generatePushContent(recommendPaperList.get(0));
                 pushToEmail(user,recommendPaperPushTitle,recommendContent);
                 Recommend recommend = new Recommend();

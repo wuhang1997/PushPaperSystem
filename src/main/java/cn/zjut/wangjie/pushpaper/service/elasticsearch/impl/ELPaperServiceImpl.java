@@ -62,17 +62,18 @@ public class ELPaperServiceImpl implements ELPaperService {
         Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex(INDEX_NAME).addType(TYPE).build();
 
         log.info(searchSourceBuilder.toString());
-        try{
+        try {
             JestResult jestResult = jestClient.execute(search);
             return jestResult.getSourceAsObjectList(PaperInfo.class);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-            log.info("向elasticsearch查询数据出错，插入内容为："+searchStr);
+            log.info("向elasticsearch查询数据出错，插入内容为：" + searchStr);
         }
         return null;
     }
+
     @Override
-    public PageDTO searchPaperInfoListByPage(PageDTO pageDTO,String searchContent){
+    public PageDTO searchPaperInfoListByPage(PageDTO pageDTO, String searchContent) {
 
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
@@ -80,18 +81,18 @@ public class ELPaperServiceImpl implements ELPaperService {
                 .should(QueryBuilders.matchQuery("authors", searchContent))
                 .should(QueryBuilders.matchQuery("paperAbstract", searchContent));
 
-        Iterable<PaperInfo> paperInfoIterable=elPaperInfoRepository.search(boolQueryBuilder);
+        Iterable<PaperInfo> paperInfoIterable = elPaperInfoRepository.search(boolQueryBuilder);
         Iterator<PaperInfo> iterator = paperInfoIterable.iterator();
         List<PaperInfo> paperInfoList = new ArrayList<>(16);
 
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
 
             paperInfoList.add(iterator.next());
 
         }
 
-        if (paperInfoList.size()==0){
+        if (paperInfoList.size() == 0) {
             pageDTO.setTotalPage(0);
             pageDTO.setContentList(null);
             return null;
@@ -100,37 +101,47 @@ public class ELPaperServiceImpl implements ELPaperService {
         pageDTO.calculatBegin();
 
 
-        int totalPages = paperInfoList.size()%pageDTO.getPageSize()>0?paperInfoList.size()/pageDTO.getPageSize()+1:paperInfoList.size()/pageDTO.getPageSize();
+        int totalPages = paperInfoList.size() % pageDTO.getPageSize() > 0 ? paperInfoList.size() / pageDTO.getPageSize() + 1 : paperInfoList.size() / pageDTO.getPageSize();
         pageDTO.setTotalPage(totalPages);
         pageDTO.calculatBegin();
-        int begin =pageDTO.getBegin();
-        int end  =pageDTO.getBegin()+pageDTO.getPageSize();
-        if (end>paperInfoList.size()-1){
-            end = paperInfoList.size()-1;
+        int begin = pageDTO.getBegin();
+        int end = pageDTO.getBegin() + pageDTO.getPageSize();
+        if (end > paperInfoList.size() - 1) {
+            end = paperInfoList.size() - 1;
         }
-        if (begin>paperInfoList.size()-1){
-            begin = paperInfoList.size()-1;
+        if (begin > paperInfoList.size() - 1) {
+            begin = paperInfoList.size() - 1;
         }
-        pageDTO.setContentList(paperInfoList.subList(begin,end));
+        pageDTO.setContentList(paperInfoList.subList(begin, end));
 
         return pageDTO;
     }
 
     @Override
-    public List<PaperInfo> recommend(List<String> searchContentList,List<Integer>collectionPaperIds,List<Integer> recommendedPaperIds) {
-       // String[] texts = {" Lerrel Pinto, James Davidson, Rahul Sukthankar, Abhinav Gupta ; "," Alexander Kolesnikov, Christoph H. Lampert ;"};
-        String[] fields = {"article","authors","paperAbstract"};
+    public List<PaperInfo> recommend(List<String> searchContentList, List<Integer> collectionPaperIds, List<Integer> recommendedPaperIds) {
+        // String[] texts = {" Lerrel Pinto, James Davidson, Rahul Sukthankar, Abhinav Gupta ; "," Alexander Kolesnikov, Christoph H. Lampert ;"};
+        String[] fields = {"article", "authors", "paperAbstract"};
 
         int size = collectionPaperIds.size();
 
         MoreLikeThisQueryBuilder.Item[] collectionItems = new MoreLikeThisQueryBuilder.Item[size];
-        for(int i=0;i<size;i++){
-            collectionItems[i] = new MoreLikeThisQueryBuilder.Item("index_paper_push","paperInfo",collectionPaperIds.get(i).toString());
+        for (int i = 0; i < size; i++) {
+            collectionItems[i] = new MoreLikeThisQueryBuilder.Item("index_paper_push", "paperInfo", collectionPaperIds.get(i).toString());
         }
         String[] texts = new String[searchContentList.size()];
+        MoreLikeThisQueryBuilder moreLikeThisQueryBuilder;
         texts = searchContentList.toArray(texts);
-        MoreLikeThisQueryBuilder moreLikeThisQueryBuilder =
-                QueryBuilders.moreLikeThisQuery(fields,texts,collectionItems);
+
+
+        if (collectionPaperIds.size() > 0) {
+            moreLikeThisQueryBuilder =
+                    QueryBuilders.moreLikeThisQuery(fields, texts, collectionItems);
+        }else {
+            moreLikeThisQueryBuilder =
+                    QueryBuilders.moreLikeThisQuery(texts);
+        }
+
+
 
       /*  size = recommendedPaperIds.size();
         MoreLikeThisQueryBuilder.Item[] recommendedItems = new MoreLikeThisQueryBuilder.Item[size];
@@ -142,10 +153,10 @@ public class ELPaperServiceImpl implements ELPaperService {
         Set<String> stopWords = WordsProcess.StopWords();
 
         String[] words = new String[stopWords.size()];
-        int i =0;
-        for (String word:stopWords
-             ) {
-            words[i]=word;
+        int i = 0;
+        for (String word : stopWords
+                ) {
+            words[i] = word;
             i++;
         }
         moreLikeThisQueryBuilder.stopWords(words);
@@ -156,7 +167,7 @@ public class ELPaperServiceImpl implements ELPaperService {
         moreLikeThisQueryBuilder.minimumShouldMatch("60%");
 
         log.info(moreLikeThisQueryBuilder.toString());
-        Iterable<PaperInfo> paperInfoIterable=elPaperInfoRepository.search(moreLikeThisQueryBuilder);
+        Iterable<PaperInfo> paperInfoIterable = elPaperInfoRepository.search(moreLikeThisQueryBuilder);
 
 
         Iterator<PaperInfo> iterator = paperInfoIterable.iterator();
@@ -164,17 +175,18 @@ public class ELPaperServiceImpl implements ELPaperService {
 
 
         PaperInfo paperInfo;
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
 
             paperInfo = iterator.next();
             boolean has = false;
-            for (Integer id:recommendedPaperIds){
-                if (paperInfo.getPaperId().equals(id)){
+            for (Integer id : recommendedPaperIds) {
+                if (paperInfo.getPaperId().equals(id)) {
                     has = true;
+                    break;
                 }
             }
-            if (!has){
-                paperInfoList.add(iterator.next());
+            if (!has) {
+                paperInfoList.add(paperInfo);
             }
 
 

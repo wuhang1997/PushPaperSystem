@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,9 +16,54 @@
                      <span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="${pageContext.request.contextPath }/main.jsp">PaperPush</a>
-                   <div class="nav-collapse collapse">
+                    <c:if test="${ empty user }">
+                        <div class="nav-collapse collapse">
+                            <ul class="nav pull-right">
+                                <li class="dropdown">
+
+                                    <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i><i class="caret"></i>
+
+                                    </a>
+                                    <ul class="dropdown-menu" id="dropdown">
+                                        <li>
+                                            <a tabindex="-1" href="${pageContext.request.contextPath }/login.jsp">登录</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a tabindex="-1" href="${pageContext.request.contextPath }/register.jsp">注册</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </c:if>
+                    <c:if test="${!empty user }">
+                        <div class="nav-collapse collapse">
+                            <ul class="nav pull-right">
+                                <li class="dropdown">
+
+                                    <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> ${user.name} <i class="caret"></i>
+
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a tabindex="-1" href="${pageContext.request.contextPath }/userCenter.jsp">用户中心</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a tabindex="-1" href="${pageContext.request.contextPath }/userController/logout">注销</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </c:if>
+                  <%-- <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li class="dropdown">
+
                                 <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> ${user.name} <i class="caret"></i>
 
                                 </a>
@@ -33,12 +79,12 @@
                             </li>
                         </ul>
 
-                    </div>
+                    </div>--%>
                     <!--/.nav-collapse -->
 
                 </div>
             </div>
-      
+
 </body>
 <script type="text/javascript">
     /* 鼠标点击特效 */
