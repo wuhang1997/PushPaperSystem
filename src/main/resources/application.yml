@@ -21,14 +21,6 @@ spring:
     poolPreparedStatements: true
     filters: stat
 
-#redis 缓存配置
-  #redis
-  #redis:
-    #database: 1
-    #host: 118.25.87.131
-    #port: 6379
-    #password: mycs_redis_wj
-    #timeout: 3000ms
 
   #elasticsearch jpa
   data:
