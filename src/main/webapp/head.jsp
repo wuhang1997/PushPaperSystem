@@ -52,7 +52,7 @@
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a tabindex="-1" href="${pageContext.request.contextPath }/userController/logout">注销</a>
+                                            <a tabindex="-1" href="${pageContext.request.contextPath }/userController/logout">退出</a>
                                         </li>
                                     </ul>
                                 </li>

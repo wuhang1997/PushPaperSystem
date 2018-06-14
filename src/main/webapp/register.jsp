@@ -64,9 +64,9 @@
 </div>
 
 <div class="footer">
-    <p>知乎 - Thousands Find</p>
+    <p>PushPaper - Thousands Find</p>
     <p>
-        Designed By ZengRong & <a href="zrong.me">aspku.com</a> 2016
+        Designed By WangJie 2018
     </p>
 </div>
 

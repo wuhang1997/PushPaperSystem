@@ -64,6 +64,7 @@ mail:
   title:
     newPaperPush: 新的论文，了解一下！
     recommendPaperPush: 有篇论文，猜你喜欢！
+    updatePaperPush: 论文更新了，快来看看！
 
 mybatis:
   configuration:
@@ -95,7 +96,7 @@ md5:
   salt: 123456
 
 paperPath: D:/resource/paper/
-
+#paperPath: /opt/paperPush/
 
 #pagehelper分页插件
 pagehelper:

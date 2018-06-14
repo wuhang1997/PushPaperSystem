@@ -6,6 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>论文详情</title>
@@ -41,6 +42,33 @@
 
     <script src="${pageContext.request.contextPath }/assets/scripts.js"></script>
     <script src="${pageContext.request.contextPath }/assets/DT_bootstrap.js"></script>
+
+
+
+
+    <link href="${pageContext.request.contextPath }/vendors/datepicker.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath }/vendors/uniform.default.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath }/vendors/chosen.min.css" rel="stylesheet" media="screen">
+
+    <link href="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet"
+          media="screen">
+
+    <script src="${pageContext.request.contextPath }/vendors/jquery-1.9.1.js"></script>
+    <script src="${pageContext.request.contextPath }/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath }/vendors/jquery.uniform.min.js"></script>
+    <script src="${pageContext.request.contextPath }/vendors/chosen.jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath }/vendors/bootstrap-datepicker.js"></script>
+
+    <script src="${pageContext.request.contextPath }/vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+    <script src="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+
+    <script src="${pageContext.request.contextPath }/vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath }/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="${pageContext.request.contextPath }/assets/form-validation.js"></script>
+
+    <script src="${pageContext.request.contextPath }/assets/scripts.js"></script>
 
 </head>
 <body>
@@ -210,29 +238,6 @@
 </body>
 
 
-<link href="${pageContext.request.contextPath }/vendors/datepicker.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath }/vendors/uniform.default.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath }/vendors/chosen.min.css" rel="stylesheet" media="screen">
-
-<link href="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet"
-      media="screen">
-
-<script src="${pageContext.request.contextPath }/vendors/jquery-1.9.1.js"></script>
-<script src="${pageContext.request.contextPath }/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath }/vendors/jquery.uniform.min.js"></script>
-<script src="${pageContext.request.contextPath }/vendors/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/vendors/bootstrap-datepicker.js"></script>
-
-<script src="${pageContext.request.contextPath }/vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
-<script src="${pageContext.request.contextPath }/vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
-
-<script src="${pageContext.request.contextPath }/vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath }/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/form-validation.js"></script>
-
-<script src="${pageContext.request.contextPath }/assets/scripts.js"></script>
 
 <script>
 

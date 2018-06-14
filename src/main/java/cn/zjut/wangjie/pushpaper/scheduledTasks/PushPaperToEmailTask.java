@@ -34,19 +34,27 @@ public class PushPaperToEmailTask {
      * 定时推送新paper
      *
      */
-    @Scheduled(cron = "0 28 10 * * ?")
+    @Scheduled(cron = "0 13 14 * * ?")
     public void pushNewPaperToAllUser(){
 
         paperService.pushNewPaperToAllUser();
 
     }
 
-    @Scheduled(cron = "0 28 10 * * ?")
+    @Scheduled(cron = "0 13 14 * * ?")
+
+    public void pushUpdatePaperToAllUser(){
+        paperService.pushUpdatePaperToAllUser();
+    }
+
+    @Scheduled(cron = "0 7 14 * * ?")
     public void pushRecommendPaper(){
 
 
         paperService.pushRecommendPaper();
 
     }
+
+
 
 }

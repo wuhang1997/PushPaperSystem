@@ -35,4 +35,5 @@ public interface PaperService {
 	int updatePaperInfo(PaperInfo paperInfo);
 
 
+	void pushUpdatePaperToAllUser();
 }

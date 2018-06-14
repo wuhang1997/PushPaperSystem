@@ -73,11 +73,12 @@ public class PaperInfoSQLFactory {
                     SET("has_pdf=#{hasPDF}");
                 }
                 if (paperInfo.getPdfUrl()!=null){
-                    SET("pdf_url=#{PdfUrl}");
+                    SET("pdf_url=#{pdfUrl}");
                 }
                 if (paperInfo.getSuppPDFUrl()!=null){
                     SET("supp_pdf_url=#{suppPDFUrl}");
                 }
+
                 SET("complete=#{complete}");
 
                 WHERE("paper_url='"+paperInfo.getPaperUrl()+"'");

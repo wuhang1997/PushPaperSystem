@@ -45,6 +45,8 @@ public class PaperServiceImpl implements PaperService {
 
 	@Value("${mail.title.newPaperPush}")
 	private String newPaperPushTitle;
+	@Value("${mail.title.updatePaperPush}")
+	private String updatePaperPushTitle;
     @Value("${mail.title.recommendPaperPush}")
     private String recommendPaperPushTitle;
 
@@ -87,13 +89,25 @@ public class PaperServiceImpl implements PaperService {
 			log.info("无新论文推送");
             return;
         }
-		System.out.println("-------------------");
-		System.out.println(newPaperToPushList.toString());
 
         List<PaperInfo> paperInfoList = paperInfoDao.getPaperByPaperIds(newPaperToPushList);
         String emailContent = generatePushContent(paperInfoList);
         List<User> userList = userDao.getAllUser();
         pushToEmail(userList,newPaperPushTitle,emailContent);
+	}
+
+	@Override
+	public void pushUpdatePaperToAllUser() {
+		List<Integer> updatePaperToPushList = redisTemplate.opsForList().range("updatePaperToPush",0,-1);
+		if (updatePaperToPushList == null || updatePaperToPushList.size() == 0){
+			log.info("无论文更新推送");
+			return;
+		}
+
+		List<PaperInfo> paperInfoList = paperInfoDao.getPaperByPaperIds(updatePaperToPushList);
+		String emailContent = generatePushContent(paperInfoList);
+		List<User> userList = userDao.getAllUser();
+		pushToEmail(userList,updatePaperPushTitle,emailContent);
 	}
 
 	private void pushToEmail(List<User> userList , String title , String content){

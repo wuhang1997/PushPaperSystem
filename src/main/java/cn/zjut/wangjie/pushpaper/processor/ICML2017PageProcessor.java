@@ -4,6 +4,7 @@ package cn.zjut.wangjie.pushpaper.processor;
 import cn.zjut.wangjie.pushpaper.constant.PaperType;
 import cn.zjut.wangjie.pushpaper.mapper.PaperInfoDao;
 import cn.zjut.wangjie.pushpaper.pojo.PaperInfo;
+import cn.zjut.wangjie.pushpaper.service.PaperAuthorService;
 import cn.zjut.wangjie.pushpaper.service.PaperService;
 import cn.zjut.wangjie.pushpaper.service.elasticsearch.ELPaperService;
 import cn.zjut.wangjie.pushpaper.util.DownloadFileUtil;
@@ -32,6 +33,10 @@ public class ICML2017PageProcessor implements PageProcessor{
     private PaperInfoDao paperInfoDao;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private PaperService paperService;
+    @Autowired
+    private PaperAuthorService paperAuthorService;
     @Value("${paperPath}")
     private String filePath;
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
@@ -59,43 +64,66 @@ public class ICML2017PageProcessor implements PageProcessor{
             paperInfo.setAuthors(page.getHtml().xpath("//div[@class='authors']/text()").toString());
             paperInfo.setPaperAbstract(page.getHtml().xpath("//div[@class='abstract']/text()").toString());
             List<String> pdfUrls=page.getHtml().xpath("//div[@id='extras']").links().all();
-            if(pdfUrls==null||pdfUrls.size()==0) {
+            boolean downloadSuccess = true ;
+            if (pdfUrls == null || pdfUrls.size() == 0) {
                 paperInfo.setHasPDF(false);
-            }else {
+            } else {
                 paperInfo.setHasPDF(true);
                 paperInfo.setPdfUrl(pdfUrls.get(0));
                 try {
                     paperInfo.setPdfFile(DownloadFileUtil.getFileNameFromUrl(pdfUrls.get(0)));
-                   // DownloadFileUtil.download(pdfUrls.get(0), filePath);
+                    DownloadFileUtil.download(pdfUrls.get(0), filePath);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log.debug("下载PDF{}出错"+paperInfo.getPdfUrl());
+                    downloadSuccess =false;
+                    log.debug("下载PDF{}出错" + paperInfo.getPdfUrl());
 
                 }
-                if(pdfUrls.size()>1) {
+                if (pdfUrls.size() > 1) {
                     paperInfo.setSuppPDFUrl(pdfUrls.get(1));
                     try {
                         paperInfo.setSuppPDFFile(DownloadFileUtil.getFileNameFromUrl(pdfUrls.get(1)));
-                       // DownloadFileUtil.download(pdfUrls.get(1), filePath);
+                        DownloadFileUtil.download(pdfUrls.get(1), filePath);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log.debug("下载supp_pdf{}出错"+paperInfo.getSuppPDFUrl());
+                        downloadSuccess = false;
+                        log.debug("下载supp_pdf{}出错" + paperInfo.getSuppPDFUrl());
                     }
                 }
             }
-           // paperInfoDao.addPaperInfo(paperInfo);
+            paperInfo.setClick(0);
+            paperInfo.setScore(25.0);
+            paperInfo.setYear(2016);
+            paperInfo.setAddTime(System.currentTimeMillis());
+            paperInfo.checkComplete();
+            if (!downloadSuccess){
+                paperInfo.setComplete(0);
+            }
 
-            Random random =new Random();
-            int id = random.nextInt(200);
-            paperInfo.setPaperId(id+1);
+            if (paperService.isPaperExist(paperInfo.getPaperUrl())){
+                PaperInfo paperInfoOld = paperService.getpaperInfoByPaperUrl(paperInfo.getPaperUrl());
+                if (paperInfo.isUpdate(paperInfoOld)) {
+                    paperService.updatePaperInfo(paperInfo);
+                    elPaperService.savePaperInfo(paperInfo);
+                    paperAuthorService.addPaperAuthor(paperInfo);
+                    redisTemplate.opsForList().rightPush("updatePaperToPush",paperInfoOld.getPaperId());
+                    redisTemplate.expire("updatePaperToPush",10L,TimeUnit.MINUTES);
 
+                }
+            }else {
+                paperInfoDao.addPaperInfo(paperInfo);
+                elPaperService.savePaperInfo(paperInfo);
+                paperAuthorService.addPaperAuthor(paperInfo);
+                redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
+                redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
 
-            redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
+            }
+
+            redisTemplate.opsForList().rightPush("newPaperToPush",12);
             redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
-           // log.info("\npaper："+paperInfo.toString());
-           // elPaperService.savePaperInfo(paperInfo);
 
         }
+
 
 	}
 	

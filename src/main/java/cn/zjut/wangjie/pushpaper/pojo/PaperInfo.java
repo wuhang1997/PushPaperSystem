@@ -38,4 +38,22 @@ public class PaperInfo implements Serializable {
 		}
 	}
 
+	public boolean isUpdate(PaperInfo paperInfoOld){
+		if (article!=null){
+			if(!article.equals(paperInfoOld.getArticle())){
+				return true;
+			}
+		}
+		if (authors!=null && !authors.equals(paperInfoOld.getAuthors())){
+			return true;
+		}
+		if (paperAbstract!=null && !paperAbstract.equals(paperInfoOld.getPaperAbstract())){
+			return true;
+		}
+		if (pdfUrl!=null && !pdfUrl.equals(paperInfoOld.getPdfUrl())){
+			return true;
+		}
+		return false;
+	}
+
 }

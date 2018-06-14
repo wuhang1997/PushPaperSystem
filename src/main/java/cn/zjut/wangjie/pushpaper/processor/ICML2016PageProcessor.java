@@ -95,41 +95,38 @@ public class ICML2016PageProcessor implements PageProcessor {
                 }
             }
             paperInfo.setClick(0);
-            paperInfo.setScore(1.0);
+            paperInfo.setScore(25.0);
             paperInfo.setYear(2016);
             paperInfo.setAddTime(System.currentTimeMillis());
             paperInfo.checkComplete();
             if (!downloadSuccess){
                 paperInfo.setComplete(0);
             }
-            paperInfoDao.addPaperInfo(paperInfo);
-
-            paperAuthorService.addPaperAuthor(paperInfo);
-         /*   Random random = new Random();
-            int id = random.nextInt(200);
-            paperInfo.setPaperId(id + 1);
-
-
-            redisTemplate.opsForList().rightPush("newPaperToPush", paperInfo.getPaperId());
-            redisTemplate.expire("newPaperToPush", 10L, TimeUnit.MINUTES);*/
-            // log.info("\npaper："+paperInfo.toString());
-            // elPaperService.savePaperInfo(paperInfo);
             if (paperService.isPaperExist(paperInfo.getPaperUrl())){
-                paperService.updatePaperInfo(paperInfo);
-                paperInfo = paperService.getpaperInfoByPaperUrl(paperInfo.getPaperUrl());
+                PaperInfo paperInfoOld = paperService.getpaperInfoByPaperUrl(paperInfo.getPaperUrl());
+                if (paperInfo.isUpdate(paperInfoOld)) {
+                    paperService.updatePaperInfo(paperInfo);
+                    elPaperService.savePaperInfo(paperInfo);
+                    paperAuthorService.addPaperAuthor(paperInfo);
 
+                    redisTemplate.opsForList().rightPush("updatePaperToPush",paperInfoOld.getPaperId());
+                    redisTemplate.expire("updatePaperToPush",10L,TimeUnit.MINUTES);
+
+                }
             }else {
                 paperInfoDao.addPaperInfo(paperInfo);
+                elPaperService.savePaperInfo(paperInfo);
+                paperAuthorService.addPaperAuthor(paperInfo);
+                redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
+                redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
+
             }
-            elPaperService.savePaperInfo(paperInfo);
-            paperAuthorService.addPaperAuthor(paperInfo);
-            redisTemplate.opsForList().rightPush("newPaperToPush",paperInfo.getPaperId());
-            redisTemplate.expire("newPaperToPush",10L,TimeUnit.MINUTES);
 
 
         }
 
     }
+
 
 
     @Override
